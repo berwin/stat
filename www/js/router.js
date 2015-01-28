@@ -12,6 +12,12 @@ define(function () {
             controller: 'homeCtrl'
         })
 
+        .state('demos', {
+            url: '/demos',
+            templateUrl: '../templates/demos.html',
+            controller: 'demosCtrl'
+        })
+
         $urlRouterProvider.otherwise( '/home' );
     };
 });

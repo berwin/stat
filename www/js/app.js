@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', './router', 'angular-ui-router', './controllers'], function (angular, router) {
+define(['angular', './router', 'angular-ui-router', './controllers', 'jquery', 'bootstrap'], function (angular, router) {
 
     angular.module('stat', ['ui.router', 'Controllers'])
 

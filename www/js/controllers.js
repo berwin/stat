@@ -7,4 +7,8 @@ define(['angular'], function (angular) {
     .controller('homeCtrl', ['$scope', function ($scope) {
         
     }])
+
+    .controller('demosCtrl', ['$scope', function ($scope) {
+        
+    }])
 });
