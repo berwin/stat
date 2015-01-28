@@ -1,0 +1,59 @@
+'use strict';
+
+
+function jsonp( json ){
+    var fnName = 'jsonp_'+Math.random();
+    fnName = fnName.replace( '.', '' );
+
+    window[ fnName ] = function ( val ){
+        json[ 'fnSucc' ] && json[ 'fnSucc' ]( val );
+        window[ fnName ] = null;
+        oH.removeChild( oS );
+    };
+
+    json[ 'data' ][ json[ 'cbName' ] ] = fnName;
+
+    var arr = [];
+    for( var i in json[ 'data' ] ){
+        arr.push( i +'='+ json[ 'data' ][ i ] );
+    }
+    var sData = arr.join( '&' );
+
+    var oS = document.createElement( 'script' );
+    oS.src = json[ 'url' ] +'?'+ sData;
+    var oH = document.getElementsByTagName( 'head' )[ 0 ];
+    oH.appendChild( oS );
+}
+
+var projectId = 'ididid';
+
+jsonp({
+    url : 'http://<%- host %>/api/' + projectId + '/stat',
+    data : {},
+    cbName : 'callback',
+    fnSucc : function( json ){}
+});
+
+/**************
+演示案例
+
+    jsonp({
+        url : 'http://suggestion.baidu.com/su',
+        data : { wd : oText.value },
+        cbName : 'cb',
+        fnSucc : function( json ){
+            oUl.innerHTML = '';
+            for( var i = 0; i < json.s.length; i++ ){
+                var aLi = document.createElement( 'li' );
+                aLi.innerHTML = json.s[ i ];
+                oUl.appendChild( aLi );
+            }
+        }
+    });
+
+url: 提交地址
+data：接口参数
+cbName：回调函数的参数名
+fnSucc：回调函数
+
+**************/

@@ -10,6 +10,9 @@ var app = express();
 var config = require( './config' );
 var router = require( './router' );
 
+app.set( 'views', path.join( __dirname, 'views' ) );
+app.set( 'view engine', 'ejs' );
+
 app.use( favicon( __dirname + '/www/images/favicon.ico' ) );
 app.use( logger( 'dev' ) );
 app.use( bodyParser.json() );

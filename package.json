@@ -1,0 +1,21 @@
+{
+  "name": "stat",
+  "version": "0.0.1",
+  "description": "这是一个统计流量平台。",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.10.2",
+    "ejs": "^2.2.3",
+    "express": "^4.11.1",
+    "morgan": "^1.5.1",
+    "static-favicon": "^2.0.0-alpha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/berwin/stat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/berwin/stat/issues"
+  },
+  "homepage": "https://github.com/berwin/stat"
+}
