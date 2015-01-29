@@ -16,3 +16,16 @@ exports.stat = function (req, res) {
 
     res.jsonp({});
 };
+
+exports.createProject = function (req, res) {
+
+};
+exports.deleteProject = function (req, res) {
+    
+};
+exports.updateProject = function (req, res) {
+    
+};
+exports.getProject = function (req, res) {
+    
+};
