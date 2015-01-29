@@ -7,6 +7,8 @@
     "body-parser": "^1.10.2",
     "ejs": "^2.2.3",
     "express": "^4.11.1",
+    "mongodb": "^1.4.29",
+    "mongoskin": "^1.4.12",
     "morgan": "^1.5.1",
     "static-favicon": "^2.0.0-alpha"
   },

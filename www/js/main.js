@@ -6,7 +6,8 @@ requirejs.config({
         'angular' : '../lib/angular/angular.min',
         'angular-ui-router' : '../lib/angular-ui-router/release/angular-ui-router.min',
         'jquery' : '../lib/jquery/dist/jquery.min',
-        'bootstrap' : '../lib/bootstrap/dist/js/bootstrap.min'
+        'bootstrap' : '../lib/bootstrap/dist/js/bootstrap.min',
+        'NProgress' : '../lib/nprogress/nprogress'
     },
 
     shim : {
@@ -23,6 +24,9 @@ requirejs.config({
         'bootstrap' : {
             exports : 'bootstrap',
             deps: ['jquery']
+        },
+        'NProgress' : {
+            exports : 'NProgress'
         }
     }
 });

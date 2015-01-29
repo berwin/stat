@@ -84,3 +84,17 @@
 .placeholders h4 {margin-bottom: 0;}
 .placeholder {margin-bottom: 20px;}
 .placeholder img {display: inline-block;border-radius: 50%;}
+
+
+/* style */
+input,button,select,textarea{outline:none}/*清除chrome的黄色边*/
+.input_text{width:100%;padding:11px 10px;margin-bottom:10px;font-size:17px;border:2px solid transparent;border-radius:6px;transition:border linear .2s,box-shadow linear .2s;}
+.input_text:focus{border-color:#337ab7;}
+
+.btn_nb{background:#337ab7;padding:12px 0;color:#fff;width:100%;transition:0.25s;border:none;border-radius:6px;}
+.btn_nb:hover{background:#3498DB;color:#fff;}
+.btn_nb:active{background:#286090;color:#fff;}
+/* create project */
+.create_project{background:#eceff1;padding:25px;border-radius:6px;max-width:500px;margin:10% auto 0;}
+
+
