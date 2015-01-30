@@ -8,24 +8,29 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
         
     }])
 
+    .controller('consoleCtrl', ['$scope', function ($scope) {
+        
+    }])
+
     .controller('homeCtrl', ['$scope', function ($scope) {
         
     }])
 
-    .controller('createProjectCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
-
+    .controller('createProjectCtrl', ['$scope', '$location', 'ProjectService', function ($scope, $location, ProjectService) {
         $scope.data = { name : '' };
 
         $scope.createProject = function () {
-            NProgress.start();
 
+            if( $scope.data.name ){
 
-            console.log($scope.data);
+                NProgress.start();
 
+                ProjectService.save($scope.data, function (data) {
+                    NProgress.done();
+                    $location.path('#/home');
+                });
 
-            ProjectService.save({}, function () {
-                NProgress.done();
-            });
+            }
         };
     }])
     

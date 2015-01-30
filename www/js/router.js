@@ -12,6 +12,12 @@ define(function () {
             controller: 'loginCtrl'
         })
 
+        .state('console', {
+            url: '/console',
+            templateUrl: '../templates/console.html',
+            controller: 'consoleCtrl'
+        })
+
         .state('home', {
             url: '/home',
             templateUrl: '../templates/home.html',
