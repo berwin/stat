@@ -14,8 +14,8 @@ router.get( '/stat/:projectID/js', controller.getStatJS );
 router.get( '/stat/:projectID/stat', controller.stat );
 
 router.put( '/client/project', controller.createProject );
-router.delete( '/client/project/:pid', controller.deleteProject );
-router.post( '/client/project/:pid', controller.updateProject );
-router.get( '/client/project/:pid', controller.getProject );
+router.delete( '/client/project', controller.deleteProject );
+router.post( '/client/project', controller.updateProject );
+router.get( '/client/project', controller.getProject );
 
 module.exports = router;

@@ -2,13 +2,7 @@
 
 define(['angular', 'NProgress'], function (angular, NProgress) {
 
-    // Global
-
-    NProgress.configure({ showSpinner: false });
-
-    // End Global
-
-    angular.module('Controllers', [])
+    angular.module('stat.controllers', [])
 
     .controller('loginCtrl', ['$scope', function ($scope) {
         
@@ -18,13 +12,20 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
         
     }])
 
-    .controller('createProjectCtrl', ['$scope', function ($scope) {
+    .controller('createProjectCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
 
-        $scope.data = { text : '' };
+        $scope.data = { name : '' };
 
         $scope.createProject = function () {
             NProgress.start();
+
+
             console.log($scope.data);
+
+
+            ProjectService.save({}, function () {
+                NProgress.done();
+            });
         };
     }])
     

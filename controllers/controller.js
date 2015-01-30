@@ -24,13 +24,13 @@ exports.createProject = function (req, res) {
         name : name,
         token : ObjectID()
     };
-    
+    res.send('createProject');
 };
 exports.deleteProject = function (req, res) {
-    
+    res.send('deleteProject');
 };
 exports.updateProject = function (req, res) {
-    
+    res.send('updateProject');
 };
 exports.getProject = function (req, res) {
     res.send('getProject');
