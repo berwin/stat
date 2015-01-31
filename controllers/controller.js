@@ -4,6 +4,7 @@ var fs = require( 'fs' );
 var path = require( 'path' );
 var ejs = require( 'ejs' );
 var ObjectID = require( '../db/mongo' ).ObjectID;
+var config = require( '../config' );
 
 var project = require( './project' );
 
@@ -19,6 +20,18 @@ exports.stat = function (req, res) {
 
     res.jsonp({});
 };
+
+exports.login = function (req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+
+    if( email === config.EMAIL && password === config.PASSWORD ){
+        res.send({userID : config.EMAIL});
+    }else{
+        res.status( 403 ).send('Incorrect username or password');
+    }
+};
+
 
 exports.createProject = function (req, res) {
     var name = req.body.name;

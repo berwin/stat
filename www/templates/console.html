@@ -1,12 +1,21 @@
 <div class="container-fluid">
-    <div ng-include src="'../templates/nav.html'"></div>
-    <h1 class="tc">控制台</h1>
-    <div class="create_project_box">
-        <ul class="list-group">
-            <li class="list-group-item">名称：demos</li>
-            <li class="list-group-item">ID：afdfsfsdf</li>
-            <li class="list-group-item">AK：adfafads</li>
-        </ul>
-        <button class="btn_nb btn_nb_red" ng-click="">删除项目</button>
+    <div class="row">
+        <div ng-include src="'../templates/menu.html'"></div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div ng-include src="'../templates/nav.html'"></div>
+
+            <div class="container-fluid">
+                <div ng-include src="'../templates/nav.html'"></div>
+                <h1 class="tc">控制台</h1>
+                <div class="create_project_box">
+                    <ul class="list-group">
+                        <li class="list-group-item">名称：demos</li>
+                        <li class="list-group-item">ID：afdfsfsdf</li>
+                        <li class="list-group-item">AK：adfafads</li>
+                    </ul>
+                    <button class="btn_nb btn_nb_red" ng-click="">删除项目</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -4,8 +4,25 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     angular.module('stat.controllers', [])
 
-    .controller('loginCtrl', ['$scope', function ($scope) {
+    .controller('loginCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         
+        $scope.data = { email: '', password : '' };
+
+        $scope.login = function () {
+            if( $scope.data.email && $scope.data.password ){
+                NProgress.start();
+
+                $http.post('/login', $scope.data).success(function () {
+
+                    NProgress.done();
+                    $location.path( '#/home' );
+                    
+                }).error(function () {
+                    NProgress.done();
+                });
+            }
+        };
+
     }])
 
     .controller('consoleCtrl', ['$scope', function ($scope) {

@@ -13,6 +13,8 @@ var controller = require( '../controllers/controller' );
 router.get( '/stat/:projectID/js', controller.getStatJS );
 router.get( '/stat/:projectID/stat', controller.stat );
 
+router.post( '/login', controller.login );
+
 router.put( '/client/project', controller.createProject );
 router.delete( '/client/project', controller.deleteProject );
 router.post( '/client/project', controller.updateProject );
