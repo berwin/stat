@@ -24,10 +24,16 @@ define(function () {
             controller: 'homeCtrl'
         })
 
-        .state('project', {
+        .state('create-project', {
             url: '/create-project',
             templateUrl: '../templates/create-project.html',
             controller: 'createProjectCtrl'
+        })
+
+        .state('project', {
+            url: '/project/:name',
+            templateUrl: '../templates/project.html',
+            controller: 'projectCtrl'
         })
 
         
