@@ -102,6 +102,12 @@ input,button,select,textarea{outline:none}/*清除chrome的黄色边*/
 .btn_nb_red:hover{background:#e74c3c;color:#fff;}
 .btn_nb_red:active{background:#c9302c;color:#fff;}
 
+/* login */
+
+.login_head{position:absolute;width:100%;height:50%;background:#3686be;margin-top:-70px;color:#fff;}
+.login_head h1{font-size:52px;margin-top:80px;}
+.login_main{width:100%;position:absolute;top:50%;margin-top:-117px;}
+
 /* create project */
 .create_project h1,.console_main h1{margin:5% 0;}
 .create_project_box{background:#eceff1;padding:25px;border-radius:6px;max-width:500px;margin:0 auto;}
