@@ -1,9 +1,10 @@
 'use strict';
 
 var express = require( 'express' );
+var favicon = require('static-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var favicon = require('static-favicon');
+var cookieParser = require('cookie-parser');
 var path = require('path');
 
 var app = express();
@@ -17,6 +18,7 @@ app.use( favicon( __dirname + '/www/images/favicon.ico' ) );
 app.use( logger( 'dev' ) );
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded() );
+app.use( cookieParser() );
 app.use( express.static( path.join( __dirname, 'www' ), { maxAge: 86400000 } ) );
 
 router( app );

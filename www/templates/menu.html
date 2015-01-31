@@ -1,8 +1,8 @@
-<div class="col-sm-3 col-md-2 sidebar">
+<div class="col-sm-3 col-md-2 sidebar" ng-controller="menuCtrl">
     <ul class="nav nav-sidebar">
-        <li class="active"><a href="#/demos">demos</a></li>
+        <li class="active"><a href="#/console">控制台</a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li><a href="#/console">控制台</a></li>
+        <li ng-repeat="item in list"><a href="#/home">{{ item.name }}</a></li>
     </ul>
 </div>

@@ -18,3 +18,7 @@ exports.update = function (id, data, callback) {
 exports.getProjectById = function (id, callback) {
     projectDB.findOne({ _id : id }, callback);
 };
+
+exports.getProjectsByUserId = function (userID, callback) {
+    projectDB.find({userID : userID}).toArray(callback);
+};

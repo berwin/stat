@@ -4,19 +4,25 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     angular.module('stat.controllers', [])
 
-    .controller('loginCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    .controller('menuCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
+
+        $scope.list = ProjectService.get();
         
+    }])
+
+    .controller('loginCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
+
         $scope.data = { email: '', password : '' };
 
         $scope.login = function () {
             if( $scope.data.email && $scope.data.password ){
                 NProgress.start();
 
-                $http.post('/login', $scope.data).success(function () {
+                RequestService.login( $scope.data ).success(function () {
 
                     NProgress.done();
                     $location.path( '#/home' );
-                    
+
                 }).error(function () {
                     NProgress.done();
                 });
