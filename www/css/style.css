@@ -103,7 +103,7 @@ input,button,select,textarea{outline:none}/*清除chrome的黄色边*/
 .btn_nb_red:active{background:#c9302c;color:#fff;}
 
 /* create project */
-.create_project h1{margin:5% 0;}
+.create_project h1,.console_main h1{margin:5% 0;}
 .create_project_box{background:#eceff1;padding:25px;border-radius:6px;max-width:500px;margin:0 auto;}
 
 /* console */

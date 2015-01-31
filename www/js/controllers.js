@@ -32,7 +32,11 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
     }])
 
     .controller('consoleCtrl', ['$scope', function ($scope) {
-        
+
+        $scope.remove = function () {
+            console.log(1);
+        };
+
     }])
 
     .controller('homeCtrl', ['$scope', function ($scope) {

@@ -80,7 +80,7 @@ exports.updateProject = function (req, res) {
 exports.getProjectsByUserId = function (req, res) {
 
     var userID = req.cookies[ 'userID' ];
-    console.log( userID );
+
     project.getProjectsByUserId( userID, function (err, list) {
         err ? res.status( 500 ).send( err ) : res.send( list );
     } );
