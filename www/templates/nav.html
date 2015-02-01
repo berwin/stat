@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="navCtrl">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -13,7 +13,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#/create-project">创建项目</a></li>
                 <li><a href="#/console">控制台</a></li>
-                <li><a href="#/login">退出</a></li>
+                <li><a href="javascript:;" ng-click="logout()">退出</a></li>
             </ul>
         </div>
     </div>

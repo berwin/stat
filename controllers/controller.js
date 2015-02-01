@@ -33,10 +33,16 @@ exports.login = function (req, res) {
         res.cookie( 'userID', config.USER_ID, { httpOnly: true });
         res.cookie( 'token', token, { httpOnly: true });
 
-        res.send('');
+        res.send();
     }else{
         res.status( 403 ).send('Incorrect username or password');
     }
+};
+
+exports.logout = function (req, res) {
+    res.clearCookie( 'userID' );
+    res.clearCookie( 'token' );
+    res.send();
 };
 
 

@@ -4,6 +4,23 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     angular.module('stat.controllers', [])
 
+    .controller('navCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
+
+        $scope.logout = function () {
+            NProgress.start();
+
+            RequestService.logout().success(function () {
+
+                NProgress.done();
+                $location.path( '/login' );
+
+            }).error(function () {
+                NProgress.done();
+            });
+        };
+
+    }])
+
     .controller('menuCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
 
         $scope.list = ProjectService.get();
@@ -21,7 +38,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
                 RequestService.login( $scope.data ).success(function () {
 
                     NProgress.done();
-                    $location.path( '#/home' );
+                    $location.path( '/home' );
 
                 }).error(function () {
                     NProgress.done();
@@ -81,7 +98,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
                 ProjectService.save($scope.data, function (data) {
                     NProgress.done();
-                    $location.path('#/home');
+                    $location.path('/home');
                 });
 
             }

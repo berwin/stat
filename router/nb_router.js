@@ -14,6 +14,7 @@ router.get( '/stat/:projectID/js', controller.getStatJS );
 router.get( '/stat/:projectID/stat', controller.stat );
 
 router.post( '/login', controller.login );
+router.get( '/logout', controller.logout );
 
 router.put( '/client/project', controller.isLogin, controller.createProject );
 router.delete( '/client/project', controller.isLogin,  controller.deleteProject );
