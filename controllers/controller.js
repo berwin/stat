@@ -42,8 +42,8 @@ exports.login = function (req, res) {
 
 exports.isLogin = function (req, res, next) {
 
-    var userID = req.cookies[ 'userID' ];
-    var clientToken = req.cookies[ 'token' ];
+    var userID = req.cookies[ 'userID' ] || '';
+    var clientToken = req.cookies[ 'token' ] || '';
 
     var serverToken = utils.getMd5( userID + config.MD5_SUFFIX );
 

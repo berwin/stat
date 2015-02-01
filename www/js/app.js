@@ -21,7 +21,31 @@ define(['angular', './router', 'NProgress', 'angular-ui-router', 'bootstrap', '.
         });
     }])
 
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
+
+        $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
+            return {
+                request : function(config) {
+                    return config;
+                },
+
+                requestError : function (rejection) {
+                    return $q.reject(rejection);
+                },
+
+                response : function(response) {
+                    return response;
+                },
+
+                responseError : function(rejection) {
+                    if(rejection.status == 403){
+                        $location.path('/login');
+                    }
+                    return $q.reject(rejection);
+                }
+            };
+        }]);
+
         router($stateProvider, $urlRouterProvider);
     }]);
 
