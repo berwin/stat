@@ -31,22 +31,43 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     }])
 
-    .controller('consoleCtrl', ['$scope', function ($scope) {
+    .controller('consoleCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
 
-        $scope.data = { name : 'demos' };
+        function consoleInit () {
 
-        $scope.change = function (name) {
-            $scope.data.name = name;
+            ProjectService.get({}, function (list) {
+                $scope.list = list;
+
+                $scope.data = {
+                    name : list[0]['name'],
+                    _id : list[0]['_id'],
+                    token : list[0]['token']
+                };
+            });
+        }
+
+        consoleInit();
+        
+
+        $scope.change = function (item) {
+            $scope.data = item;
         };
 
-        $scope.remove = function () {
-            console.log(1);
+        $scope.remove = function (id) {
+            NProgress.start();
+
+            ProjectService.remove({id : id}, function () {
+                consoleInit();
+                NProgress.done();
+            });
         };
 
     }])
 
-    .controller('homeCtrl', ['$scope', function ($scope) {
-        
+    .controller('homeCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
+        ProjectService.get({}, function (list) {
+            $scope.list = list;
+        });
     }])
 
     .controller('createProjectCtrl', ['$scope', '$location', 'ProjectService', function ($scope, $location, ProjectService) {

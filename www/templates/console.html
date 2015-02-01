@@ -4,9 +4,9 @@
     <h1 class="tc">控制台</h1>
     <div class="create_project_box">
         <ul class="list-group">
-            <li class="list-group-item">名称：demos</li>
-            <li class="list-group-item">ID：afdfsfsdf</li>
-            <li class="list-group-item">AK：adfafads</li>
+            <li class="list-group-item">名称：{{ data.name }}</li>
+            <li class="list-group-item">ID：{{ data._id }}</li>
+            <li class="list-group-item">AK：{{ data.token }}</li>
         </ul>
         <div class="tc">
             <div class="btn-group">
@@ -14,11 +14,10 @@
                 {{ data.name }} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="change('demos')">demos</a></li>
-                <li><a ng-click="change('test')">test</a></li>
+                <li ng-repeat="item in list"><a ng-click="change(item)">{{ item.name }}</a></li>
             </ul>
             </div>
-            <button type="button" class="btn btn-danger">删除项目</button>
+            <button type="button" class="btn btn-danger" ng-click="remove(data._id)">删除项目</button>
         </div>
     </div>
 </div>

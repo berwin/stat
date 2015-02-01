@@ -4,32 +4,21 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-include src="'../templates/nav.html'"></div>
 
-            <h2 class="sub-header">您共有两个项目(总之就是一些User的简介或统计报表什么的)</h2>
+            <h2 class="sub-header">您共有{{ list.length }}个项目</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>项目名称</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
+                            <th>xiang</th>
                             <th>Header</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>demos</td>
+                        <tr ng-repeat="item in list">
+                            <td>{{ item.name }}</td>
                             <td>Lorem</td>
                             <td>ipsum</td>
-                            <td>dolor</td>
-                            <td>sit</td>
-                        </tr>
-                        <tr>
-                            <td>test</td>
-                            <td>Lorem</td>
-                            <td>ipsum</td>
-                            <td>dolor</td>
-                            <td>sit</td>
                         </tr>
                     </tbody>
                 </table>

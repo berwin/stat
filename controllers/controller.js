@@ -72,7 +72,11 @@ exports.createProject = function (req, res) {
     
 };
 exports.deleteProject = function (req, res) {
-    res.send('deleteProject');
+    var id = req.query.id;
+
+    project.remove(id, function (err, result) {
+        err ? res.status( 500 ).send( err ) : res.send();
+    });
 };
 exports.updateProject = function (req, res) {
     res.send('updateProject');

@@ -16,3 +16,4 @@ exports.create = function (data, callback) {
 };
 
 exports.getProjectsByUserId = projectDB.getProjectsByUserId;
+exports.remove = projectDB.remove;
