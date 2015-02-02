@@ -2,12 +2,9 @@
 var groupDB = require( '../../db/groupDB' );
 var ObjectID = require( '../../db/mongo' ).ObjectID;
 
-exports.create = function (data, callback) {
+exports.create = function (name, projectID, callback) {
 
-    var name = data.name;
-    var projectID = data.projectID;
-
-    if( name && projectID ){
+    if (name && projectID) {
 
         var obj = {
             _id : ObjectID().toString(),
@@ -21,3 +18,20 @@ exports.create = function (data, callback) {
         callback( 'not name or projectID' );
     }
 };
+
+exports.remove = function (id, callback) {
+    id ? groupDB.remove(id, callback) : callback( 'not groupID' );
+};
+
+exports.update = function (id, name, callback) {
+
+    if (id && name) {
+        groupDB.update(id, {name : name}, callback);
+    }else{
+        callback('not groupID or name');
+    }
+
+};
+
+exports.getGroupById = groupDB.getGroupById;
+exports.getGroupByProjectId = groupDB.getGroupByProjectId;

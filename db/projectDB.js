@@ -20,5 +20,5 @@ exports.getProjectById = function (id, callback) {
 };
 
 exports.getProjectsByUserId = function (userID, callback) {
-    projectDB.find({userID : userID}).toArray(callback);
+    projectDB.find({ userID : userID }).toArray(callback);
 };

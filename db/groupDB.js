@@ -8,7 +8,7 @@ exports.insert = function (data, callback) {
 };
 
 exports.remove = function (id, callback) {
-    groupDB.remove({ _id : id}, callback);
+    groupDB.remove({ _id : id }, callback);
 };
 
 exports.update = function (id, data, callback) {
@@ -17,4 +17,8 @@ exports.update = function (id, data, callback) {
 
 exports.getGroupById = function (id, callback) {
     groupDB.findOne({ _id : id }, callback);
+};
+
+exports.getGroupByProjectId = function (id, callback) {
+    groupDB.find({ projectID : id }).toArray(callback);
 };
