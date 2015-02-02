@@ -16,9 +16,9 @@ router.get( '/stat/:projectID/stat', controller.stat );
 router.post( '/login', controller.login );
 router.get( '/logout', controller.logout );
 
-router.put( '/client/project', controller.isLogin, controller.createProject );
+router.post( '/client/project', controller.isLogin, controller.createProject );
 router.delete( '/client/project', controller.isLogin,  controller.deleteProject );
-router.post( '/client/project', controller.isLogin,  controller.updateProject );
+router.put( '/client/project', controller.isLogin,  controller.updateProject );
 router.get( '/client/project', controller.isLogin,  controller.getProjectsByUserId );
 
 module.exports = router;

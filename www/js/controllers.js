@@ -23,7 +23,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     .controller('menuCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
 
-        $scope.list = ProjectService.get();
+        $scope.list = ProjectService.query();
         
     }])
 
@@ -52,7 +52,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
         function consoleInit () {
 
-            ProjectService.get({}, function (list) {
+            ProjectService.query({}, function (list) {
                 $scope.list = list;
 
                 $scope.data = {
@@ -82,7 +82,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
     }])
 
     .controller('homeCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
-        ProjectService.get({}, function (list) {
+        ProjectService.query({}, function (list) {
             $scope.list = list;
         });
     }])
