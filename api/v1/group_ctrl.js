@@ -2,10 +2,6 @@
 
 var group = require( './group' );
 
-exports.test = function (req, res) {
-    res.send( 'test: This message comes from -> api/v1/controller\n' );
-};
-
 exports.createGroup = function (req, res) {
     var name = req.body.name;
     var projectID = req.body.projectID;
