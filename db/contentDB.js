@@ -11,6 +11,10 @@ exports.remove = function (id, callback) {
     contentDB.remove({ _id : id}, callback);
 };
 
+exports.removeByProjectId = function (projectID, callback) {
+    contentDB.remove({ projectID : projectID}, callback);
+};
+
 exports.update = function (id, data, callback) {
     contentDB.findAndModify({ _id : id }, [], { $set : data }, { upsert : true, new : true }, callback);
 };
