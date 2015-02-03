@@ -15,12 +15,12 @@ exports.create = function (name, projectID, callback) {
         groupDB.insert(obj, callback);
 
     }else{
-        callback( 'not name or projectID' );
+        callback( 'no name or projectID' );
     }
 };
 
 exports.remove = function (id, callback) {
-    id ? groupDB.remove(id, callback) : callback( 'not groupID' );
+    id ? groupDB.remove(id, callback) : callback( 'no groupID' );
 };
 
 exports.update = function (id, name, callback) {
@@ -28,7 +28,7 @@ exports.update = function (id, name, callback) {
     if (id && name) {
         groupDB.update(id, {name : name}, callback);
     }else{
-        callback('not groupID or name');
+        callback('no groupID or name');
     }
 
 };
