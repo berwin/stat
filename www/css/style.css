@@ -105,7 +105,7 @@ input,button,select,textarea{outline:none}/*清除chrome的黄色边*/
 /* login */
 
 .login_head{position:absolute;width:100%;height:50%;background:#3686be;margin-top:-70px;color:#fff;}
-.login_head h1{font-size:52px;margin-top:80px;}
+.login_head h1{font-size:60px;margin-top:80px;}
 .login_main{width:100%;position:absolute;top:50%;margin-top:-117px;}
 
 /* create project */
