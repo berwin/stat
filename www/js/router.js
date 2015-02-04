@@ -31,7 +31,7 @@ define(function () {
         })
 
         .state('project', {
-            url: '/project/:name',
+            url: '/project/:id',
             templateUrl: '../templates/project.html',
             controller: 'projectCtrl'
         })

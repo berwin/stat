@@ -18,8 +18,6 @@ exports.create = function (data, callback) {
     projectDB.insert(obj, callback);
 };
 
-exports.getProjectsByUserId = projectDB.getProjectsByUserId;
-
 exports.remove = function (id, callback) {
 
     function removeGroup (projectID, cb) {
@@ -54,3 +52,6 @@ exports.remove = function (id, callback) {
         }
     ], callback);
 };
+
+exports.getProjectsByUserId = projectDB.getProjectsByUserId;
+exports.getProjectById = projectDB.getProjectById;

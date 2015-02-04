@@ -3,22 +3,33 @@
         <div ng-include src="'../templates/menu.html'"></div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-include src="'../templates/nav.html'"></div>
-
             <h2 class="sub-header">您共有{{ list.length }}个项目</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>项目名称</th>
-                            <th>xiang</th>
-                            <th>Header</th>
+                            <th>#</th>
+                            <th ng-repeat="item in list"><a href="#/project/{{item._id}}">{{item.name}}</a></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in list">
-                            <td>{{ item.name }}</td>
-                            <td>Lorem</td>
-                            <td>ipsum</td>
+                        <tr>
+                            <td>今日</td>
+                            <td>100</td>
+                            <td>10</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>昨日</td>
+                            <td>50</td>
+                            <td>10</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>总共</td>
+                            <td>500</td>
+                            <td>200</td>
+                            <td>400</td>
                         </tr>
                     </tbody>
                 </table>

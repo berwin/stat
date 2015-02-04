@@ -105,7 +105,9 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
         };
     }])
     
-    .controller('projectCtrl', ['$scope', function ($scope) {
+    .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', function ($scope, $stateParams, ProjectService) {
+        var id = $stateParams.id;
 
+        $scope.project = ProjectService.get({id : id});
     }])
 });

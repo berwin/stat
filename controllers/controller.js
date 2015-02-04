@@ -91,7 +91,16 @@ exports.getProjectsByUserId = function (req, res) {
 
     var userID = req.cookies[ 'userID' ];
 
-    project.getProjectsByUserId( userID, function (err, list) {
-        err ? res.status( 500 ).send( err ) : res.send( list );
-    } );
+    var id = req.query.id;
+
+    function result (err, result) {
+        err ? res.status( 500 ).send( err ) : res.send( result );
+    }
+
+    if (id) {
+        project.getProjectById( id, result);
+    } else {
+        project.getProjectsByUserId( userID, result );
+    }
+
 };
