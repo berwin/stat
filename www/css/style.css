@@ -1,5 +1,7 @@
 .tc{text-align:center;}
 .tr{text-align:right;}
+.bg_blue{background:#337ab7;color:#fff;}
+.bg_green{background:#3adbab;color:#000;}
 
 /* Home */
 
@@ -83,7 +85,7 @@
 .placeholders {margin-bottom: 30px;text-align: center;}
 .placeholders h4 {margin-bottom: 0;}
 .placeholder {margin-bottom: 20px;}
-.placeholder img {display: inline-block;border-radius: 50%;}
+.placeholder div {width:185px;height:185px;line-height:185px;border-radius: 50%;margin:0 auto;font-size:40px;}
 
 
 /* style */

@@ -3,8 +3,25 @@
         <div ng-include src="'../templates/menu.html'"></div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-include src="'../templates/nav.html'"></div>
-            <h2 class="sub-header">{{project.name}}</h2>
-            123
+            <h1 class="page-header">{{project.name}}</h1>
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-4 placeholder">
+                    <div class="bg_blue">123</div>
+                    <h4>昨日</h4>
+                    <span class="text-muted">昨日新增</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 placeholder">
+                    <div class="bg_green">123</div>
+                    <h4>今日</h4>
+                    <span class="text-muted">今日新增</span>
+                </div>
+                <div class="col-xs-6 col-sm-4 placeholder">
+                    <div class="bg_blue">123</div>
+                    <h4>总共</h4>
+                    <span class="text-muted">总数据数量</span>
+                </div>
+            </div>
+            <h2 class="sub-header">Section title</h2>
         </div>
     </div>
 </div>
