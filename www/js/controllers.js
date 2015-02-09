@@ -113,7 +113,31 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
     .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', 'GroupService', 'ContentService', function ($scope, $stateParams, ProjectService, GroupService, ContentService) {
         var id = $stateParams.id;
 
+        function getNowDate () {
+            var nowDate = new Date();
+            var newDateStr = nowDate.getFullYear() + '-' + ( nowDate.getMonth()+1 ) + '-' + nowDate.getDate();
+
+            return {
+                firstTime : newDateStr + '-00:00:00',
+                lastTime : newDateStr + '-23:59:59'
+            }
+        }
+
+        var oDate = getNowDate();
+
         $scope.project = ProjectService.get({id : id});
-        $scope.group = GroupService.query({projectID : id});
+
+        function iterator (item, i, arr) {
+            ContentService.query({groupID: item._id, firstTime : oDate.firstTime, lastTime : oDate.lastTime}, function (list) {
+                item.contents = list;
+            });
+        }
+
+        GroupService.query({projectID : id}, function (list) {
+            $scope.group = list;
+
+            list.forEach(iterator);
+        });
+
     }])
 });

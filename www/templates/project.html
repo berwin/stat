@@ -6,7 +6,7 @@
             <h1 class="page-header">基础信息</h1>
             <div class="row placeholders">
                 <div class="col-xs-6 col-sm-{{12 / group.length}} placeholder" ng-repeat="item in group">
-                    <div class="bg_blue">123</div>
+                    <div class="bg_blue">{{ item.contents.length }}</div>
                     <h4>{{item.name}}</h4>
                     <span class="text-muted">今日增加</span>
                 </div>

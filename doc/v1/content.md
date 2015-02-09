@@ -49,8 +49,8 @@
 
     {
         groupID : '54cf559a7bb318e6104d53cd',
-        firstTime : '2015-02-02:12:00:00',
-        lastTime : '2015-02-02:13:00:00'
+        firstTime : '2015-2-9-00:00:00',
+        lastTime : '2015-2-9-23:59:59'
     }
 
 #### response
