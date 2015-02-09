@@ -21,10 +21,15 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     }])
 
-    .controller('menuCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
+    .controller('menuCtrl', ['$scope', '$stateParams', 'ProjectService', function ($scope, $stateParams, ProjectService) {
+        ProjectService.query({}, function (list) {
 
-        $scope.list = ProjectService.query();
-        
+            list.forEach(function (item, i, arr) {
+                if( item.name === $stateParams.name ) item.active = 'active';
+            });
+
+            $scope.list = list;
+        });
     }])
 
     .controller('loginCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
@@ -105,9 +110,10 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
         };
     }])
     
-    .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', function ($scope, $stateParams, ProjectService) {
+    .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', 'GroupService', 'ContentService', function ($scope, $stateParams, ProjectService, GroupService, ContentService) {
         var id = $stateParams.id;
 
         $scope.project = ProjectService.get({id : id});
+        $scope.group = GroupService.query({projectID : id});
     }])
 });
