@@ -98,7 +98,7 @@ exports.getProjectsByUserId = function (req, res) {
     }
 
     if (id) {
-        project.getProjectById( id, result);
+        project.getProjectById( id, result );
     } else {
         project.getProjectsByUserId( userID, result );
     }

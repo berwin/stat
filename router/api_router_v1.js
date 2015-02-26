@@ -2,13 +2,26 @@
 
 var express = require( 'express' );
 var router = express.Router();
+var utils = require( '../lib/utils' );
+var project = require( '../controllers/project' );
 
 var group_ctrl = require( '../api/v1/group_ctrl' );
 var content_ctrl = require( '../api/v1/content_ctrl' );
 
 router.all( '/*', function (req, res, next) {
+
     var data = {};
-    next();
+
+    req.method === 'GET' ? data = req.query : data = req.body;
+
+    project.getProjectById(data.projectID, function (err, result) {
+        if (!err) {
+            var oldToken = utils.getMd5(result._id + result.token);
+            data.token === oldToken ? next() : res.status(403).send('Incorrect token');
+        } else {
+            res.status(403).send('Incorrect token');
+        }
+    });
 } );
 
 router.post( '/group', group_ctrl.createGroup );
