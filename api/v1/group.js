@@ -2,14 +2,15 @@
 var groupDB = require( '../../db/groupDB' );
 var ObjectID = require( '../../db/mongo' ).ObjectID;
 
-exports.create = function (name, projectID, callback) {
+exports.create = function (name, projectID, types, callback) {
 
     if (name && projectID) {
 
         var obj = {
             _id : ObjectID().toString(),
             name : name,
-            projectID : projectID
+            projectID : projectID,
+            types : types
         };
 
         groupDB.insert(obj, callback);

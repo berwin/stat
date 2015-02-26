@@ -5,8 +5,9 @@ var group = require( './group' );
 exports.createGroup = function (req, res) {
     var name = req.body.name;
     var projectID = req.body.projectID;
+    var types = req.body.types || [];
 
-    group.create(name, projectID, function (err, result) {
+    group.create(name, projectID, types, function (err, result) {
         err ? res.status(403).send(err) : res.send(result[0]);
     });
 };

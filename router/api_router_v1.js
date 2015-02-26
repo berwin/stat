@@ -6,6 +6,11 @@ var router = express.Router();
 var group_ctrl = require( '../api/v1/group_ctrl' );
 var content_ctrl = require( '../api/v1/content_ctrl' );
 
+router.all( '/*', function (req, res, next) {
+    var data = {};
+    next();
+} );
+
 router.post( '/group', group_ctrl.createGroup );
 router.delete( '/group', group_ctrl.delGroup );
 router.put( '/group', group_ctrl.updateGroup );
