@@ -36,6 +36,11 @@ define(function () {
             controller: 'projectCtrl'
         })
 
+        .state('create-group', {
+            url: '/create-group',
+            templateUrl: '../templates/create-group.html',
+            controller: 'createGroupCtrl'
+        })
         
 
         $urlRouterProvider.otherwise( '/home' );

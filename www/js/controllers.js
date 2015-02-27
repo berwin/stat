@@ -162,4 +162,37 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
         });
 
     }])
+
+    .controller('createGroupCtrl', ['$scope', 'ProjectService', 'GroupService', function ($scope, ProjectService, GroupService) {
+        ProjectService.query({}, function (list) {
+            $scope.list = list;
+        });
+
+        $scope.change = function (item) {
+            $scope.project = item;
+        };
+
+        $scope.data = {name : '', types : ''};
+
+        $scope.create = function () {
+            if (!$scope.project || !$scope.data.name) return;
+
+            var data = {
+                projectID : $scope.project._id,
+                name : $scope.data.name
+            };
+
+            if (!!$scope.data.types) {
+                data.types = $scope.data.types.split(',');
+            };
+
+
+            NProgress.start();
+            
+            GroupService.save(data, function () {
+                NProgress.done();
+            });
+        };
+
+    }])
 });

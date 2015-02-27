@@ -1,0 +1,21 @@
+<div class="container-fluid create_project">
+    <div ng-include src="'../templates/nav.html'"></div>
+    <h1 class="tc">创建分组</h1>
+    <div class="create_project_box create_group_box">
+        <input type="text" placeholder="分组名称（必选）" class="input_text mb20" ng-model="data.name" />
+        <input type="text" placeholder="分组分类(可选) 多个分类用英文逗号分隔 例如： a,b" class="input_text mb20" ng-model="data.types" />
+        <div class="input-group mb20">
+            <input type="text" class="input_text" value="{{project.name}}" placeholder="请选择项目" disabled>
+
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    {{project.name || '选择项目'}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <li ng-repeat="item in list"><a href="javascript:;" ng-click="change(item)">{{item.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn_nb btn_nb_blue" ng-click="create()">创建</button>
+    </div>
+</div>

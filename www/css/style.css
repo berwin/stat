@@ -119,8 +119,5 @@ input,button,select,textarea{outline:none}/*清除chrome的黄色边*/
 .console_main h1{margin:3% 0;}
 .console_sidebar{padding:20px;}
 
-
-
-
-
-
+.create_group_box .input-group,.create_group_box .input-group input,.create_group_box .input-group .btn{height:50px;}
+.create_group_box .input-group input{font-size:17px;border-radius:6px 0 0 6px;margin:0;border:1px solid #ccc;}
