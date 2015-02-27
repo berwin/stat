@@ -2,12 +2,34 @@
     <div ng-include src="'../templates/nav.html'"></div>
 
     <h1 class="tc">控制台</h1>
-    <div class="create_project_box">
+    <div class="create_project_box console_box">
+        <div>
         <ul class="list-group">
             <li class="list-group-item">名称：{{ data.name }}</li>
             <li class="list-group-item">ID：{{ data._id }}</li>
             <li class="list-group-item">TOKEN：{{ data.token }}</li>
         </ul>
+
+        <h4 class="tc">组</h4>
+        <table class="table table-hover" style="background:#fff;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名字</th>
+                    <th>类型</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in groups">
+                    <td>{{item._id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.types.toString() || '空'}}</td>
+                    <td><a href="javascript:;" ng-click="delete(item)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
         <div class="tc">
             <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

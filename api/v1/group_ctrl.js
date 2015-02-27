@@ -13,7 +13,7 @@ exports.createGroup = function (req, res) {
 };
 
 exports.delGroup = function (req, res) {
-    var groupID = req.body.id;
+    var groupID = req.query.id;
 
     group.remove(groupID, function (err, result) {
         err ? res.status(403).send(err) : res.send();

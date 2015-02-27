@@ -53,7 +53,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     }])
 
-    .controller('consoleCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
+    .controller('consoleCtrl', ['$scope', 'ProjectService', 'GroupService', function ($scope, ProjectService, GroupService) {
 
         function consoleInit () {
 
@@ -65,20 +65,42 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
                     _id : list[0]['_id'],
                     token : list[0]['token']
                 };
+
+                gruopsInit($scope.data._id);
+            });
+
+        }
+
+        function gruopsInit (projectID) {
+            GroupService.query({projectID : projectID}, function (list) {
+                $scope.groups = list;
             });
         }
 
         consoleInit();
-        
 
         $scope.change = function (item) {
             $scope.data = item;
+            gruopsInit(item._id);
         };
+
+        // delete project
 
         $scope.remove = function (id) {
             NProgress.start();
 
             ProjectService.remove({id : id}, function () {
+                consoleInit();
+                NProgress.done();
+            });
+        };
+
+        // delete group
+
+        $scope.delete = function (item) {
+            NProgress.start();
+            
+            GroupService.remove({id : item._id}, function () {
                 consoleInit();
                 NProgress.done();
             });

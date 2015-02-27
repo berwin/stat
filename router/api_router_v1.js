@@ -8,7 +8,7 @@ var project = require( '../controllers/project' );
 var group_ctrl = require( '../api/v1/group_ctrl' );
 var content_ctrl = require( '../api/v1/content_ctrl' );
 
-router.all( '/*', function (req, res, next) {
+function auth (req, res, next) {
 
     var data = {};
 
@@ -19,17 +19,17 @@ router.all( '/*', function (req, res, next) {
             var oldToken = utils.getMd5(result._id + result.token);
             data.token === oldToken ? next() : res.status(403).send('Incorrect token');
         } else {
-            res.status(403).send('Incorrect token');
+            res.status(401).send('Incorrect token');
         }
     });
-} );
+}
 
 router.post( '/group', group_ctrl.createGroup );
 router.delete( '/group', group_ctrl.delGroup );
 router.put( '/group', group_ctrl.updateGroup );
 router.get( '/group', group_ctrl.getGroup );
 
-router.post( '/content', content_ctrl.createContent );
+router.post( '/content', auth, content_ctrl.createContent );
 router.delete( '/content', content_ctrl.delContent );
 router.put( '/content', content_ctrl.updateContent );
 router.get( '/content', content_ctrl.getContent );

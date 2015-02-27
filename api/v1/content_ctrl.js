@@ -15,7 +15,7 @@ exports.createContent = function (req, res) {
 };
 
 exports.delContent = function (req, res) {
-    var id = req.body.id;
+    var id = req.query.id;
 
     if( !id ) res.status(403).send('no id');
 
