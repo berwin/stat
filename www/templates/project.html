@@ -3,16 +3,15 @@
         <div ng-include src="'../templates/menu.html'"></div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-include src="'../templates/nav.html'"></div>
-            <h1 class="page-header">基础信息</h1>
+            <h1 class="page-header">今日增加</h1>
             <div class="row placeholders">
-                <div class="col-xs-6 col-sm-{{12 / group.length}} placeholder" ng-repeat="item in group">
-                    <div class="bg_blue">{{ item.contents.length }}</div>
+                <div class="col-xs-6 col-sm-{{12 / group.length}} placeholder" ng-repeat="item in groups">
+                    <div class="bg_blue pointer" ng-click="tabStat(item)">{{ item.contents.length }}</div>
                     <h4>{{item.name}}</h4>
-                    <span class="text-muted">今日增加</span>
+                    <!-- <span class="text-muted">今日增加</span> -->
                 </div>
             </div>
             <!-- <h2 class="sub-header" ng-repeat="item in group">{{ item.name }}</h2> -->
-            <h1 class="page-header">报表</h1>
             <div id="basics-chart"></div>
         </div>
     </div>

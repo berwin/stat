@@ -156,7 +156,7 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
         }
 
         GroupService.query({projectID : id}, function (list) {
-            $scope.group = list;
+            $scope.groups = list;
 
             list.forEach(iterator);
 
@@ -164,7 +164,13 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
         });
 
 
-        // highcharts
+        // Click tab
+
+        $scope.tabStat = function (group) {
+            renderChart(24, group, oDate.firstTime, oDate.lastTime);
+        };
+
+        // Highcharts
 
         function renderChart (leng, group, firstTime, lastTime) {
 
@@ -236,9 +242,8 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                     },
                     plotOptions: {
                         line: {
-                            dataLabels: {
-                                enabled: true
-                            }
+                            dataLabels: { enabled: true },
+                            marker: { enabled: false }
                         }
                     },
                     series: [{
