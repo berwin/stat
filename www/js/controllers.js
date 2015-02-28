@@ -163,7 +163,7 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
 
     }])
 
-    .controller('createGroupCtrl', ['$scope', 'ProjectService', 'GroupService', function ($scope, ProjectService, GroupService) {
+    .controller('createGroupCtrl', ['$scope', '$location', 'ProjectService', 'GroupService', function ($scope, $location, ProjectService, GroupService) {
         ProjectService.query({}, function (list) {
             $scope.list = list;
         });
@@ -185,12 +185,13 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
             if (!!$scope.data.types) {
                 data.types = $scope.data.types.split(',');
             };
-
+            
 
             NProgress.start();
-            
+
             GroupService.save(data, function () {
                 NProgress.done();
+                $location.path( '/project/' + $scope.project._id + '/' + $scope.project.name );
             });
         };
 
