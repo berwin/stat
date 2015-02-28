@@ -8,7 +8,8 @@ requirejs.config({
         'ngResource' : '../lib/angular-resource/angular-resource.min',
         'jquery' : '../lib/jquery/dist/jquery.min',
         'bootstrap' : '../lib/bootstrap/dist/js/bootstrap.min',
-        'NProgress' : '../lib/nprogress/nprogress'
+        'NProgress' : '../lib/nprogress/nprogress',
+        'highcharts' : '../lib/highcharts/highcharts'
     },
 
     shim : {
@@ -31,6 +32,10 @@ requirejs.config({
         },
         'NProgress' : {
             exports : 'NProgress'
+        },
+        'highcharts' : {
+            exports : 'highcharts',
+            deps : ['jquery']
         }
     }
 });

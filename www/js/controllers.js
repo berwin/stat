@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'NProgress'], function (angular, NProgress) {
+define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, highcharts) {
 
     angular.module('stat.controllers', [])
 
@@ -159,7 +159,98 @@ define(['angular', 'NProgress'], function (angular, NProgress) {
             $scope.group = list;
 
             list.forEach(iterator);
+
+            renderChart(24, list[0], oDate.firstTime, oDate.lastTime);
         });
+
+
+        // highcharts
+
+        function renderChart (leng, group, firstTime, lastTime) {
+
+            var data = {
+                yesterDay : [],
+                toDay : [],
+                async : 0
+            };
+
+            ContentService.query({groupID: group._id, firstTime : firstTime, lastTime : lastTime}, function (list) {
+                data.async++;
+                data.toDay = list;
+
+                if (data.async === 2) highchart(data);
+
+            });
+
+            ContentService.query({groupID: group._id, firstTime : firstTime - 86400000, lastTime : lastTime - 86400000}, function (list) {
+                data.async++;
+                data.yesterDay = list;
+                if (data.async === 2) highchart(data);
+            });
+
+            function getPoints (list) {
+                list.sort(function (a, b) {
+                    return a.time - b.time;
+                });
+
+                var arr = list.map(function (item) {
+                    item.hours = new Date(item.time).getHours();
+                    return item;
+                });
+
+                var points = [];
+                for( var i = 0; i < leng; i++ ){
+                    var c = 0;
+
+                    for( var j = 0; j <arr .length; j++){
+                        if( arr[j].hours === i ) c++;
+                    }
+
+                    points.push(c);
+                }
+                return points;
+            }
+
+            function highchart (data) {
+
+                var todayPoints = getPoints(data.toDay);
+                var yesterDay = getPoints(data.yesterDay);
+
+                var categories = [];
+                for( var i = 0; i < leng; i++ ){
+                    categories[i] = i + '点';
+                }
+
+                $('#basics-chart').highcharts({
+                    title: {
+                        text: group.name,
+                        x: -20 //center
+                    },
+                    yAxis: { title: { text : ''} },
+                    credits: { enabled:false },
+                    xAxis: {
+                        categories: categories
+                    },
+                    tooltip: {
+                        valueSuffix: '条'
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '今天',
+                        data: todayPoints
+                    }, {
+                        name: '昨天',
+                        data: yesterDay
+                    }]
+                });
+            }
+        }
 
     }])
 
