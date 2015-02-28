@@ -12,7 +12,7 @@ function auth (req, res, next) {
 
     var data = {};
 
-    req.method === 'GET' ? data = req.query : data = req.body;
+    (req.method === 'GET' || req.method === 'DELETE') ? data = req.query : data = req.body;
 
     project.getProjectById(data.projectID, function (err, result) {
         if (!err) {
