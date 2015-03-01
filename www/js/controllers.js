@@ -135,8 +135,10 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
     .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', 'GroupService', 'ContentService', function ($scope, $stateParams, ProjectService, GroupService, ContentService) {
         var id = $stateParams.id;
 
-        function getNowDate () {
-            var nowDate = new Date();
+        function getToday (str) {
+            var nowDate = null;
+            str ? nowDate = new Date(str) : nowDate = new Date();
+
             var newDateStr = nowDate.getFullYear() + '-' + ( nowDate.getMonth()+1 ) + '-' + nowDate.getDate();
 
             return {
@@ -145,7 +147,7 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
             }
         }
 
-        var oDate = getNowDate();
+        var oDate = getToday();
 
         $scope.project = ProjectService.get({id : id});
 
@@ -188,7 +190,10 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
             });
 
-            ContentService.query({groupID: group._id, firstTime : firstTime - 86400000, lastTime : lastTime - 86400000}, function (list) {
+            var yesterDayTime = new Date(firstTime).getTime() - 86400000;
+            var yesterDayDate = getToday(yesterDayTime);
+
+            ContentService.query({groupID: group._id, firstTime : yesterDayDate.firstTime, lastTime : yesterDayDate.lastTime}, function (list) {
                 data.async++;
                 data.yesterDay = list;
                 if (data.async === 2) highchart(data);
