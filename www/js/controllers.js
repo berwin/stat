@@ -155,6 +155,9 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
             ContentService.query({groupID: item._id, firstTime : oDate.firstTime, lastTime : oDate.lastTime}, function (list) {
                 item.contents = list;
             });
+            ContentService.query({groupID: item._id}, function (list) {
+                item.count = list.length;
+            });
         }
 
         GroupService.query({projectID : id}, function (list) {

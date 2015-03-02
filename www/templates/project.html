@@ -15,6 +15,21 @@
             <h2 class="sub-header">报表</h2>
             <div id="column"></div>
             <div id="basics-chart"></div>
+            <h2 class="sub-header">数据总量</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>分组名称</th>
+                        <th>总数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in groups">
+                        <td>{{item.name}}</td>
+                        <td>{{item.count}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
