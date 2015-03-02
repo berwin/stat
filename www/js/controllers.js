@@ -199,7 +199,7 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                 if (data.async === 2) highchart(data);
             });
 
-            function getPoints (list) {
+            function getLineChartPoints (list) {
                 list.sort(function (a, b) {
                     return a.time - b.time;
                 });
@@ -210,10 +210,10 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                 });
 
                 var points = [];
-                for( var i = 0; i < leng; i++ ){
+                for (var i = 0; i < leng; i++) {
                     var c = 0;
 
-                    for( var j = 0; j <arr .length; j++){
+                    for (var j = 0; j <arr .length; j++) {
                         if( arr[j].hours === i ) c++;
                     }
 
@@ -222,13 +222,43 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                 return points;
             }
 
+            function getColumnPoints (list) {
+
+                function hasColumnName (arr, item) {
+                    var temp = false;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].name === item) temp = true;
+                    }
+                    return temp;
+                }
+
+                var columns = [];
+
+                for (var i = 0; i < list.length; i++) {
+                    
+                    if (hasColumnName(columns, list[i].type)) {
+                        for (var j = 0; j < columns.length; j++) {
+                            if (columns[j].name === list[i].type) columns[j].y++;
+                        };
+                    } else {
+                        var obj = { name : list[i].type , y : 1 };
+                        columns.push( obj );
+                    }
+                };
+
+                if (columns.length === 0) columns.push({ name : 'default' , y : 0 });
+                return columns;
+            }
+
             function highchart (data) {
 
-                var todayPoints = getPoints(data.toDay);
-                var yesterDay = getPoints(data.yesterDay);
+                // Line Charts
+
+                var todayPoints = getLineChartPoints(data.toDay);
+                var yesterDay = getLineChartPoints(data.yesterDay);
 
                 var categories = [];
-                for( var i = 0; i < leng; i++ ){
+                for (var i = 0; i < leng; i++) {
                     categories[i] = i + '点';
                 }
 
@@ -257,6 +287,48 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                     }, {
                         name: '昨天',
                         data: yesterDay
+                    }]
+                });
+
+
+                // Column Charts
+
+                var columns = getColumnPoints(data.toDay);
+
+                $('#column').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: '分类统计'
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: { title: { text: '' } },
+                    credits: { enabled:false },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.0f}'
+                            }
+                        }
+                    },
+
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> of total<br/>'
+                    },
+
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: columns
                     }]
                 });
             }
