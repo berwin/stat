@@ -325,11 +325,11 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
                     tooltip: {
                         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> of total<br/>'
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> 条数据<br/>'
                     },
 
                     series: [{
-                        name: 'Brands',
+                        name: group.name,
                         colorByPoint: true,
                         data: columns
                     }]
