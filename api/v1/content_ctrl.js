@@ -55,7 +55,6 @@ exports.getContent = function (req, res) {
     }
 
     if( !type && !firstTime && !lastTime ){
-        content.getContentsByGroupId(groupID, result);
 
         groupID ?
             content.getContentsByGroupId(groupID, result) : 
