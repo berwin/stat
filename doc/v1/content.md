@@ -53,6 +53,20 @@
         lastTime : '2015-2-9-23:59:59'
     }
 
+    or
+
+    {
+        projectID : '54ccb965c8eb932ca2eda801'
+    }
+
+    or
+
+    {
+        projectID : '54ccb965c8eb932ca2eda801',
+        firstTime : '2015-2-9-00:00:00',
+        lastTime : '2015-2-9-23:59:59'
+    }
+
 #### response
 
     [

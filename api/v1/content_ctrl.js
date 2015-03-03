@@ -29,12 +29,13 @@ exports.updateContent = function (req, res) {
 };
 
 exports.getContent = function (req, res) {
+    var projectID = req.query.projectID;
     var groupID = req.query.groupID;
     var type = req.query.type;
     var firstTime = req.query.firstTime;
     var lastTime = req.query.lastTime;
 
-    if( !groupID ) res.status(403).send('no groupID');
+    if( !groupID && !projectID ) res.status(403).send('no groupID');
 
     function result (err, list) {
         err ? res.status(500).send(err) : res.send(list);
@@ -44,14 +45,21 @@ exports.getContent = function (req, res) {
         content.getContentsByType(groupID, type, result);
     }
 
-    if( groupID && firstTime && lastTime ){
+    if( firstTime && lastTime ){
         var ft = new Date( firstTime ).getTime();
         var lt = new Date( lastTime ).getTime();
 
-        content.getContentsByTime(groupID, ft, lt, result);
+        groupID ? 
+            content.getContentsByTime(groupID, ft, lt, result) : 
+            content.getContentsByProjectTime(projectID, ft, lt, result);
     }
 
-    if( groupID && !type && !firstTime && !lastTime ){
+    if( !type && !firstTime && !lastTime ){
         content.getContentsByGroupId(groupID, result);
+
+        groupID ?
+            content.getContentsByGroupId(groupID, result) : 
+            content.getContentsByProjectId(projectID, result);
     }
+
 };

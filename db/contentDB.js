@@ -30,3 +30,11 @@ exports.getContentsByGroupId = function (groupID, callback) {
 exports.getContentsByTime = function (groupID, firstTime, lastTime, callback) {
     contentDB.find({ groupID : groupID, time : { $gte : firstTime, $lte : lastTime } }).toArray(callback);
 };
+
+exports.getContentsByProjectId = function (projectID, callback) {
+    contentDB.find({ projectID : projectID }).toArray(callback);
+};
+
+exports.getContentsByProjectTime = function (projectID, firstTime, lastTime, callback) {
+    contentDB.find({ projectID : projectID, time : { $gte : firstTime, $lte : lastTime } }).toArray(callback);
+};

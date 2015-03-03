@@ -28,3 +28,5 @@ exports.remove = function (id, callback) {
 exports.getContentsByType = contentDB.getContentsByType;
 exports.getContentsByGroupId = contentDB.getContentsByGroupId;
 exports.getContentsByTime = contentDB.getContentsByTime;
+exports.getContentsByProjectId = contentDB.getContentsByProjectId;
+exports.getContentsByProjectTime = contentDB.getContentsByProjectTime;
