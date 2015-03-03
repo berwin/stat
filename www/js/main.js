@@ -21,7 +21,8 @@ requirejs.config({
             deps: ["angular"]
         },
         'ngResource' : {
-            exports : 'ngResource'
+            exports : 'ngResource',
+            deps: ["angular"]
         },
         'jquery' : {
             exports : 'jquery'
