@@ -108,9 +108,10 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
     }])
 
-    .controller('homeCtrl', ['$scope', 'ProjectService', function ($scope, ProjectService) {
+    .controller('homeCtrl', ['$scope', 'ProjectService', '$location', function ($scope, ProjectService, $location) {
         ProjectService.query({}, function (list) {
             $scope.list = list;
+            $location.path('/project/'+ list[0]._id +'/' + list[0].name);
         });
     }])
 

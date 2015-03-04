@@ -4,30 +4,6 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-include src="'../templates/nav.html'"></div>
             <h2 class="sub-header">您共有{{ list.length }}个项目</h2>
-            <div class="table-responsive">
-                <table class="table table-striped tc">
-                    <thead>
-                        <tr>
-                            <th class="tc">#</th>
-                            <th ng-repeat="item in list" class="tc"><a href="#/project/{{item._id}}/{{item.name}}">{{item.name}}</a></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>今日</td>
-                            <td ng-repeat="item in list">300</td>
-                        </tr>
-                        <tr>
-                            <td>昨日</td>
-                            <td ng-repeat="item in list">50</td>
-                        </tr>
-                        <tr>
-                            <td>总共</td>
-                            <td ng-repeat="item in list">500</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </div>
