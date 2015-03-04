@@ -304,7 +304,7 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                         type: 'column'
                     },
                     title: {
-                        text: '分类统计'
+                        text: group.name
                     },
                     xAxis: {
                         type: 'category'
