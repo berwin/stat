@@ -250,7 +250,15 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
                     }
                 };
 
-                if (columns.length === 0) columns.push({ name : 'default' , y : 0 });
+                // default
+                if (columns.length === 0 && group.types.length > 0) {
+                    for (var i = 0; i < group.types.length; i++) {
+                        columns.push({ name : group.types[i], y : 0 });
+                    }
+                } else {
+                    columns.push({ name : 'default', y : 0 });
+                }
+
                 return columns;
             }
 
