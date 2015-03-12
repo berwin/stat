@@ -1,6 +1,21 @@
 # stat
 
-####这这是一个数据统计平台。
+## Introduction
 
-使用 express 提供 RESTful 接口，使用 angularjs 渲染前台页面
+* Description : 这是一个数据统计平台 (This is a data statistical platform)
+* Engineer : Berwin
 
+
+#### Nodejs
+
+* express
+
+#### FrontEnd
+
+* angularjs
+* requirejs
+
+
+## License
+
+The MIT License (MIT)
