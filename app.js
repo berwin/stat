@@ -6,6 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var path = require('path');
+var user = require( 'user-sdk' );
 
 var app = express();
 var config = require( './config' );
@@ -23,5 +24,12 @@ app.use( express.static( path.join( __dirname, 'www' ), { maxAge: 86400000 } ) )
 
 router( app );
 
+
+// User Init
+user.create({
+    MD5_SUFFIX : config.MD5_SUFFIX,
+    APPID : config.APPID,
+    ENTRANCE : config.NAME
+});
 
 app.listen( config.LISTEN );

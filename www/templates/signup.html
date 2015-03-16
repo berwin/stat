@@ -1,0 +1,13 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<div class="login_head tc">
+    <h1>注册</h1>
+    <p class="lead">这是一个数据统计平台。</p>
+</div>
+<div class="container-fluid login_main">
+    <div class="create_project_box">
+        <input type="text" placeholder="登录邮箱" class="input_text mb20 {{err.mail}}" ng-model="data.mail" />
+        <input type="password" placeholder="登录密码" class="input_text mb20 {{err.password}}" ng-model="data.password" />
+        <input type="password" placeholder="确认密码" class="input_text mb20 {{err.confirm}}" ng-model="data.confirm" />
+        <button class="btn_nb btn_nb_blue" ng-click="signup()">Sign Up</button>
+    </div>
+</div>

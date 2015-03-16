@@ -9,12 +9,14 @@
 var express = require( 'express' );
 var router = express.Router();
 var controller = require( '../controllers/controller' );
+var user = require( '../controllers/user' );
 
 router.get( '/stat/:projectID/js', controller.getStatJS );
 router.get( '/stat/:projectID/stat', controller.stat );
 
-router.post( '/login', controller.login );
-router.get( '/logout', controller.logout );
+router.post( '/login', user.login );
+router.get( '/logout', user.logout );
+router.post( '/signup', user.signup );
 
 router.post( '/client/project', controller.isLogin, controller.createProject );
 router.delete( '/client/project', controller.isLogin,  controller.deleteProject );

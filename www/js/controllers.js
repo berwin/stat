@@ -34,10 +34,10 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
     .controller('loginCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
 
-        $scope.data = { email: '', password : '' };
+        $scope.data = { mail: '', password : '' };
 
         $scope.login = function () {
-            if( $scope.data.email && $scope.data.password ){
+            if( $scope.data.mail && $scope.data.password ){
                 NProgress.start();
 
                 RequestService.login( $scope.data ).success(function () {
@@ -51,6 +51,50 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
             }
         };
 
+    }])
+
+    .controller('signupCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+        $scope.data = { mail : '', password : '', confirm : '' };
+        $scope.err = { mail : '', password : '', confirm : '' };
+
+
+        function send () {
+            var temp = true;
+
+            for (var i in $scope.err) {
+                if ($scope.err[i] === 'err') temp = false;
+            }
+
+            if (temp) {
+                NProgress.start();
+
+                $http.post('/signup', $scope.data).success(function (data) {
+                    NProgress.done();
+
+                    $location.path( '/login' );
+
+                }).error(function (data) {
+                    NProgress.done();
+                });
+            }
+        }
+
+        $scope.signup = function () {
+
+            for (var i in $scope.data ) {
+                if (!$scope.data[i]) {
+                    $scope.err[ i ] = 'err';
+                } else {
+                    $scope.err[ i ] = '';
+                }
+            }
+
+            if (!/(.+@.+(\.[a-z]+){1,2})/.test( $scope.data.mail )) $scope.err.mail = 'err';
+
+            if ($scope.data.password !== $scope.data.confirm) $scope.err.confirm = 'err';
+
+            send();
+        };
     }])
 
     .controller('consoleCtrl', ['$scope', 'ProjectService', 'GroupService', function ($scope, ProjectService, GroupService) {

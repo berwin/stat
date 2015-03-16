@@ -12,6 +12,12 @@ define(function () {
             controller: 'loginCtrl'
         })
 
+        .state('signup', {
+            url: '/signup',
+            templateUrl: '../templates/signup.html',
+            controller: 'signupCtrl'
+        })
+
         .state('console', {
             url: '/console',
             templateUrl: '../templates/console.html',

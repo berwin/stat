@@ -22,30 +22,6 @@ exports.stat = function (req, res) {
     res.jsonp({});
 };
 
-exports.login = function (req, res) {
-    var email = req.body.email;
-    var password = req.body.password;
-
-    if( email === config.EMAIL && password === config.PASSWORD ){
-
-        var token = utils.getMd5( config.USER_ID + config.MD5_SUFFIX );
-
-        res.cookie( 'userID', config.USER_ID, { httpOnly: true });
-        res.cookie( 'token', token, { httpOnly: true });
-
-        res.send();
-    }else{
-        res.status( 403 ).send('Incorrect username or password');
-    }
-};
-
-exports.logout = function (req, res) {
-    res.clearCookie( 'userID' );
-    res.clearCookie( 'token' );
-    res.send();
-};
-
-
 exports.isLogin = function (req, res, next) {
 
     var userID = req.cookies[ 'userID' ] || '';
