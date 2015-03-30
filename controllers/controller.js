@@ -30,7 +30,7 @@ exports.isLogin = function (req, res, next) {
     var serverToken = utils.getMd5( userID + config.MD5_SUFFIX );
 
     if( clientToken !== serverToken ){
-        res.status( 403 ).send('not login');
+        res.status( 401 ).send('not login');
     }else{
         next();
     }

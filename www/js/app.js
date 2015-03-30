@@ -38,7 +38,7 @@ define(['angular', './router', 'NProgress', 'angular-ui-router', 'bootstrap', '.
                 },
 
                 responseError : function(rejection) {
-                    if(rejection.status == 403){
+                    if(rejection.status == 401){
                         $location.path('/login');
                     }
                     return $q.reject(rejection);
