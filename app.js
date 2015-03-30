@@ -32,4 +32,7 @@ user.create({
     ENTRANCE : config.NAME
 });
 
-app.listen( config.LISTEN );
+var server = app.listen(config.LISTEN, function () {
+    var port = server.address().port
+    console.log( '\x1b[32mLife listening at', port + '\x1b[0m' );
+});
