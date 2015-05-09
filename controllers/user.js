@@ -44,7 +44,25 @@ exports.login = function (req, res) {
     var mail = req.body.mail;
     var password = req.body.password;
 
-    if( email === config.EMAIL && password === config.PASSWORD ){
+    user.signin({
+        mail : mail,
+        password : password
+    }, function (err, r, result) {
+        var status = r.statusCode;
+
+        if (status < 200 || status >= 300 && status !== 304) return res.status( status ).send( result );
+        // status >= 200 && status < 300 || status === 304
+
+        var token = utils.getMd5( result._id + config.MD5_SUFFIX );
+
+        res.cookie( 'userID', result._id, { httpOnly: true });
+        res.cookie( 'token', token, { httpOnly: true });
+
+        res.send();
+    });
+
+
+    /*if( email === config.EMAIL && password === config.PASSWORD ){
 
         var token = utils.getMd5( config.USER_ID + config.MD5_SUFFIX );
 
@@ -54,7 +72,7 @@ exports.login = function (req, res) {
         res.send();
     }else{
         res.status( 403 ).send('Incorrect username or password');
-    }
+    }*/
 };
 
 exports.logout = function (req, res) {
