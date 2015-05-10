@@ -14,9 +14,10 @@ var user = require( '../controllers/user' );
 router.get( '/stat/:projectID/js', controller.getStatJS );
 router.get( '/stat/:projectID/stat', controller.stat );
 
+router.post( '/signup', user.signup );
+router.get( '/activation', user.activation );
 router.post( '/login', user.login );
 router.get( '/logout', user.logout );
-router.post( '/signup', user.signup );
 
 router.post( '/client/project', controller.isLogin, controller.createProject );
 router.delete( '/client/project', controller.isLogin,  controller.deleteProject );
