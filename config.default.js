@@ -9,8 +9,5 @@ module.exports = {
     SEND_MAIL_SERVICE : 'qq',
     SEND_MAIL_USER : 'email-address',
     SEND_MAIL_PASS : 'email-password',
-    SEND_MAIL_FROM : 'Stat<stat@berwin.me>',
-    EMAIL : 'email',
-    PASSWORD : 'password',
-    USER_ID : 'userID'
+    SEND_MAIL_FROM : 'Stat<stat@berwin.me>'
 }
