@@ -1,21 +1,14 @@
 'use strict';
 
-define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, highcharts) {
+define(['angular', 'highcharts'], function (angular, highcharts) {
 
     angular.module('stat.controllers', [])
 
     .controller('navCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
 
         $scope.logout = function () {
-            NProgress.start();
-
             RequestService.logout().success(function () {
-
-                NProgress.done();
                 $location.path( '/login' );
-
-            }).error(function () {
-                NProgress.done();
             });
         };
 
@@ -38,15 +31,9 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
         $scope.login = function () {
             if( $scope.data.mail && $scope.data.password ){
-                NProgress.start();
 
                 RequestService.login( $scope.data ).success(function () {
-
-                    NProgress.done();
                     $location.path( '/home' );
-
-                }).error(function () {
-                    NProgress.done();
                 });
             }
         };
@@ -59,24 +46,13 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
 
         function send () {
-            var temp = true;
-
             for (var i in $scope.err) {
-                if ($scope.err[i] === 'err') temp = false;
+                if ($scope.err[i] === 'err') return;
             }
 
-            if (temp) {
-                NProgress.start();
-
-                $http.post('/signup', $scope.data).success(function (data) {
-                    NProgress.done();
-
-                    $location.path( '/login' );
-
-                }).error(function (data) {
-                    NProgress.done();
-                });
-            }
+            $http.post('/signup', $scope.data).success(function (data) {
+                $location.path( '/login' );
+            });
         }
 
         $scope.signup = function () {
@@ -103,6 +79,12 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
 
             ProjectService.query({}, function (list) {
                 $scope.list = list;
+
+                if (!list.length) {
+                    $scope.data = {};
+                    $scope.groups = [];
+                    return;
+                }
 
                 $scope.data = {
                     name : list[0]['name'],
@@ -131,22 +113,16 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
         // delete project
 
         $scope.remove = function (id) {
-            NProgress.start();
-
             ProjectService.remove({id : id}, function () {
                 consoleInit();
-                NProgress.done();
             });
         };
 
         // delete group
 
         $scope.delete = function (item) {
-            NProgress.start();
-            
             GroupService.remove({id : item._id}, function () {
                 consoleInit();
-                NProgress.done();
             });
         };
 
@@ -163,17 +139,11 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
         $scope.data = { name : '' };
 
         $scope.createProject = function () {
+            if (!$scope.data.name) return;
 
-            if( $scope.data.name ){
-
-                NProgress.start();
-
-                ProjectService.save($scope.data, function (data) {
-                    NProgress.done();
-                    $location.path('/home');
-                });
-
-            }
+            ProjectService.save($scope.data, function (data) {
+                $location.path('/home');
+            });
         };
     }])
     
@@ -414,12 +384,8 @@ define(['angular', 'NProgress', 'highcharts'], function (angular, NProgress, hig
             if (!!$scope.data.types) {
                 data.types = $scope.data.types.split(',');
             };
-            
-
-            NProgress.start();
 
             GroupService.save(data, function () {
-                NProgress.done();
                 $location.path( '/project/' + $scope.project._id + '/' + $scope.project.name );
             });
         };

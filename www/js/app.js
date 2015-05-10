@@ -26,6 +26,7 @@ define(['angular', './router', 'NProgress', 'angular-ui-router', 'bootstrap', '.
         $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
             return {
                 request : function(config) {
+                    NProgress.start();
                     return config;
                 },
 
@@ -34,10 +35,12 @@ define(['angular', './router', 'NProgress', 'angular-ui-router', 'bootstrap', '.
                 },
 
                 response : function(response) {
+                    NProgress.done();
                     return response;
                 },
 
                 responseError : function(rejection) {
+                    NProgress.done();
                     if(rejection.status == 401){
                         $location.path('/login');
                     }
