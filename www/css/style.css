@@ -8,6 +8,7 @@
 .mt10{margin-top:10px;}
 .clearfix:before,.clearfix:after{content:''; display:table;}.clearfix:after{clear:both;}.clearfix{*zoom:1;}
 .err{border-color:#e74c3c!important;}
+#nprogress .bar{background:#eee;}
 
 /* Home */
 
