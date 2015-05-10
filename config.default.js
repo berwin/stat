@@ -2,6 +2,7 @@
 
 module.exports = {
     NAME : 'stat',
+    HOST : 'stat.berwin.me',
     LISTEN : 9001,
     MONGO_RUL : 'mongodb://127.0.0.1:27017/stat',
     MD5_SUFFIX : 'Encryption',
