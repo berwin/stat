@@ -1,5 +1,24 @@
 <div class="col-sm-3 col-md-2 sidebar" ng-controller="menuCtrl">
     <ul class="nav nav-sidebar">
-        <li ng-repeat="item in list" class="{{item.active}}"><a href="#/project/{{ item._id }}/{{ item.name }}">{{ item.name }}</a></li>
+        <li ng-class="{active : isActive('#/home')}"><a href="#/home">
+            <span class="menu-icon"><i class="fa fa-desktop"></i></span>
+            <span>主面板</span>
+            <span class="menu-hover"></span>
+        </a></li>
+        <li><a href="#/create-project">
+            <span class="menu-icon"><i class="fa fa-desktop"></i></span>
+            <span>创建项目</span>
+            <span class="menu-hover"></span>
+        </a></li>
+        <li><a href="#/create-group">
+            <span class="menu-icon"><i class="fa fa-desktop"></i></span>
+            <span>创建分组</span>
+            <span class="menu-hover"></span>
+        </a></li>
+        <li><a href="#/console">
+            <span class="menu-icon"><i class="fa fa-desktop"></i></span>
+            <span>控制台</span>
+            <span class="menu-hover"></span>
+        </a></li>
     </ul>
 </div>

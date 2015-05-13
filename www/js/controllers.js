@@ -15,14 +15,9 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
     }])
 
     .controller('menuCtrl', ['$scope', '$stateParams', 'ProjectService', function ($scope, $stateParams, ProjectService) {
-        ProjectService.query({}, function (list) {
-
-            list.forEach(function (item, i, arr) {
-                if( item.name === $stateParams.name ) item.active = 'active';
-            });
-
-            $scope.list = list;
-        });
+        $scope.isActive = function (url) {
+            return window.location.hash === url;
+        };
     }])
 
     .controller('loginCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
@@ -129,10 +124,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
     }])
 
     .controller('homeCtrl', ['$scope', 'ProjectService', '$location', function ($scope, ProjectService, $location) {
-        ProjectService.query({}, function (list) {
-            $scope.list = list;
-            $location.path('/project/'+ list[0]._id +'/' + list[0].name);
-        });
+        $scope.list = ProjectService.query();
     }])
 
     .controller('createProjectCtrl', ['$scope', '$location', 'ProjectService', function ($scope, $location, ProjectService) {

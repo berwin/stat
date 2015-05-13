@@ -29,4 +29,12 @@ define(['angular', 'ngResource'], function (angular) {
         };
     }])
 
+    .run(['$rootScope', '$location', function ($rootScope, $location) {
+        $rootScope.to = function (url) {
+            var url_parsed = url.split("?");
+            var path = url_parsed[0];
+            $location.path(path);
+        };
+    }])
+
 });
