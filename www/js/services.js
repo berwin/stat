@@ -4,12 +4,15 @@ define(['angular', 'ngResource'], function (angular) {
 
     angular.module( 'stat.services', ['ngResource'] )
 
-    .factory('ProjectService', ['$resource', function ($resource) {
-        return $resource('/client/project');
+    .factory('SourceService', ['$resource', function ($resource) {
+        return $resource('/client/source/:id', {id: '@_id'},{
+            'update': { method:'PUT' }
+        });
     }])
 
-    .factory('GroupService', ['$resource', function ($resource) {
-        return $resource('/api/v1/group');
+    .factory('GroupService', ['$resource', '$stateParams', function ($resource, $stateParams) {
+        var sourceID = $stateParams.id;
+        return $resource('/client/:sourceID/group/:id', {sourceID: sourceID, id: '@_id'});
     }])
 
     .factory('ContentService', ['$resource', function ($resource) {

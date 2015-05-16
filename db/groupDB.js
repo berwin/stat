@@ -19,6 +19,6 @@ exports.getGroupById = function (id, callback) {
     groupDB.findOne({ _id : id }, callback);
 };
 
-exports.getGroupByProjectId = function (id, callback) {
-    groupDB.find({ projectID : id }).toArray(callback);
+exports.getGroupBySourceId = function (id, callback) {
+    groupDB.find({ sourceID : id }).toArray(callback);
 };

@@ -11,7 +11,7 @@ exports.remove = function (id, callback) {
     contentDB.remove({ _id : id}, callback);
 };
 
-exports.removeByProjectId = function (projectID, callback) {
+exports.removeBySourceId = function (projectID, callback) {
     contentDB.remove({ projectID : projectID}, callback);
 };
 

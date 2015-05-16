@@ -14,9 +14,9 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
 
     }])
 
-    .controller('menuCtrl', ['$scope', '$stateParams', 'ProjectService', function ($scope, $stateParams, ProjectService) {
+    .controller('menuCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
         $scope.isActive = function (url) {
-            return window.location.hash === url;
+            return window.location.hash.indexOf(url) !== -1;
         };
     }])
 
@@ -28,7 +28,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
             if( $scope.data.mail && $scope.data.password ){
 
                 RequestService.login( $scope.data ).success(function () {
-                    $location.path( '/home' );
+                    $location.path( '/source' );
                 });
             }
         };
@@ -68,27 +68,27 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         };
     }])
 
-    .controller('consoleCtrl', ['$scope', 'ProjectService', 'GroupService', function ($scope, ProjectService, GroupService) {
+    .controller('consoleCtrl', ['$scope', 'SourceService', 'GroupService', function ($scope, SourceService, GroupService) {
 
         function consoleInit () {
 
-            ProjectService.query({}, function (list) {
-                $scope.list = list;
+            var list = SourceService.query();
 
-                if (!list.length) {
-                    $scope.data = {};
-                    $scope.groups = [];
-                    return;
-                }
+            $scope.list = list;
 
-                $scope.data = {
-                    name : list[0]['name'],
-                    _id : list[0]['_id'],
-                    token : list[0]['token']
-                };
+            if (!list.length) {
+                $scope.data = {};
+                $scope.groups = [];
+                return;
+            }
 
-                gruopsInit($scope.data._id);
-            });
+            $scope.data = {
+                name : list[0]['name'],
+                _id : list[0]['_id'],
+                token : list[0]['token']
+            };
+
+            gruopsInit($scope.data._id);
 
         }
 
@@ -108,7 +108,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         // delete project
 
         $scope.remove = function (id) {
-            ProjectService.remove({id : id}, function () {
+            SourceService.remove({id : id}, function () {
                 consoleInit();
             });
         };
@@ -123,23 +123,73 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
 
     }])
 
-    .controller('homeCtrl', ['$scope', 'ProjectService', '$location', function ($scope, ProjectService, $location) {
-        $scope.list = ProjectService.query();
+    .controller('sourceCtrl', ['$scope', 'SourceService', '$location', function ($scope, SourceService, $location) {
+        $scope.list = SourceService.query();
     }])
 
-    .controller('createProjectCtrl', ['$scope', '$location', 'ProjectService', function ($scope, $location, ProjectService) {
+    .controller('sourceCreateCtrl', ['$scope', '$location', 'SourceService', function ($scope, $location, SourceService) {
         $scope.data = { name : '' };
 
-        $scope.createProject = function () {
+        $scope.createSource = function () {
             if (!$scope.data.name) return;
 
-            ProjectService.save($scope.data, function (data) {
-                $location.path('/home');
+            SourceService.save($scope.data, function (data) {
+                $location.path('/source');
             });
         };
     }])
+
+    .controller('sourceEditCtrl', ['$scope', '$stateParams', '$location', 'SourceService', function ($scope, $stateParams, $location, SourceService) {
+        $scope.data = SourceService.get($stateParams);
+
+        $scope.update = function () {
+            SourceService.update($stateParams, $scope.data);
+        }
+
+        $scope.delete = function () {
+            SourceService.delete($stateParams, function () {
+                $location.path('/');
+            });
+        }
+    }])
     
-    .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', 'GroupService', 'ContentService', function ($scope, $stateParams, ProjectService, GroupService, ContentService) {
+    .controller('sourceInfoCtrl', ['$scope', '$stateParams', 'SourceService', function ($scope, $stateParams, SourceService) {
+        $scope.data = SourceService.get($stateParams);
+    }])
+
+    .controller('sourceDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
+        $scope.source = SourceService.get($stateParams);
+        $scope.groups = GroupService.query();
+    }])
+
+    .controller('createGroupCtrl', ['$scope', '$location', 'SourceService', 'GroupService', function ($scope, $location, SourceService, GroupService) {
+
+        $scope.change = function (item) {
+            $scope.project = item;
+        };
+
+        $scope.data = {name : '', types : ''};
+
+        $scope.create = function () {
+            if (!$scope.project || !$scope.data.name) return;
+
+            var data = {
+                projectID : $scope.project._id,
+                name : $scope.data.name
+            };
+
+            if (!!$scope.data.types) {
+                data.types = $scope.data.types.split(',');
+            };
+
+            GroupService.save(data, function () {
+                $location.path( '/project/' + $scope.project._id + '/' + $scope.project.name );
+            });
+        };
+
+    }])
+
+    .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
         var id = $stateParams.id;
 
         function getToday (str) {
@@ -156,7 +206,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
 
         var oDate = getToday();
 
-        $scope.project = ProjectService.get({id : id});
+        $scope.project = SourceService.get({id : id});
 
         function iterator (item, i, arr) {
             ContentService.query({groupID: item._id, firstTime : oDate.firstTime, lastTime : oDate.lastTime}, function (list) {
@@ -351,36 +401,6 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
                 });
             }
         }
-
-    }])
-
-    .controller('createGroupCtrl', ['$scope', '$location', 'ProjectService', 'GroupService', function ($scope, $location, ProjectService, GroupService) {
-        ProjectService.query({}, function (list) {
-            $scope.list = list;
-        });
-
-        $scope.change = function (item) {
-            $scope.project = item;
-        };
-
-        $scope.data = {name : '', types : ''};
-
-        $scope.create = function () {
-            if (!$scope.project || !$scope.data.name) return;
-
-            var data = {
-                projectID : $scope.project._id,
-                name : $scope.data.name
-            };
-
-            if (!!$scope.data.types) {
-                data.types = $scope.data.types.split(',');
-            };
-
-            GroupService.save(data, function () {
-                $location.path( '/project/' + $scope.project._id + '/' + $scope.project.name );
-            });
-        };
 
     }])
 });

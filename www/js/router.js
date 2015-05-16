@@ -24,31 +24,43 @@ define(function () {
             controller: 'consoleCtrl'
         })
 
-        .state('home', {
-            url: '/home',
-            templateUrl: '../templates/home.html',
-            controller: 'homeCtrl'
+        .state('source', {
+            url: '/source',
+            templateUrl: '../templates/source/source.html',
+            controller: 'sourceCtrl'
         })
 
-        .state('create-project', {
-            url: '/create-project',
-            templateUrl: '../templates/create-project.html',
-            controller: 'createProjectCtrl'
+        .state('source-create', {
+            url: '/source/create',
+            templateUrl: '../templates/source/source-create.html',
+            controller: 'sourceCreateCtrl'
         })
 
-        .state('project', {
-            url: '/project/:id',
-            templateUrl: '../templates/project.html',
-            controller: 'projectCtrl'
+        .state('source-edit', {
+            url: '/source/:id/edit',
+            templateUrl: '../templates/source/source-edit.html',
+            controller: 'sourceEditCtrl'
+        })
+
+        .state('source-info', {
+            url: '/source/:id/info',
+            templateUrl: '../templates/source/source-info.html',
+            controller: 'sourceInfoCtrl'
+        })
+
+        .state('source-detail', {
+            url: '/source/:id',
+            templateUrl: '../templates/source/source-detail.html',
+            controller: 'sourceDetailCtrl'
         })
 
         .state('create-group', {
-            url: '/create-group',
-            templateUrl: '../templates/create-group.html',
+            url: '/source/:sourceID/create',
+            templateUrl: '../templates/group/create.html',
             controller: 'createGroupCtrl'
         })
         
 
-        $urlRouterProvider.otherwise( '/home' );
+        $urlRouterProvider.otherwise( '/source' );
     };
 });

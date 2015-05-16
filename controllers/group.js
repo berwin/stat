@@ -1,22 +1,22 @@
 'use strict';
-var groupDB = require( '../../db/groupDB' );
-var ObjectID = require( '../../db/mongo' ).ObjectID;
+var groupDB = require( '../db/groupDB' );
+var ObjectID = require( '../db/mongo' ).ObjectID;
 
-exports.create = function (name, projectID, types, callback) {
+exports.create = function (name, sourceID, types, callback) {
 
-    if (name && projectID) {
+    if (name && sourceID) {
 
         var obj = {
             _id : ObjectID().toString(),
             name : name,
-            projectID : projectID,
+            sourceID : sourceID,
             types : types
         };
 
         groupDB.insert(obj, callback);
 
     }else{
-        callback( 'no name or projectID' );
+        callback( 'no name or sourceID' );
     }
 };
 
@@ -35,4 +35,4 @@ exports.update = function (id, name, callback) {
 };
 
 exports.getGroupById = groupDB.getGroupById;
-exports.getGroupByProjectId = groupDB.getGroupByProjectId;
+exports.getGroupBySourceId = groupDB.getGroupBySourceId;
