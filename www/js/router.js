@@ -42,7 +42,7 @@ define(function () {
 
         .state('source-detail', {
             url: '/source/:sourceID',
-            templateUrl: '../templates/group/group-list.html',
+            templateUrl: '../templates/group/list.html',
             controller: 'groupListCtrl'
         })
         .state('create-group', {
@@ -54,6 +54,11 @@ define(function () {
             url: '/source/:sourceID/:id/edit',
             templateUrl: '../templates/group/create.html',
             controller: 'editGroupCtrl'
+        })
+        .state('edit-info', {
+            url: '/source/:sourceID/:id/info',
+            templateUrl: '../templates/group/info.html',
+            controller: 'infoGroupCtrl'
         })
         
 

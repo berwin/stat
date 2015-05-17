@@ -166,6 +166,11 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
             });
         };
     }])
+    
+    .controller('infoGroupCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
+        $scope.source = SourceService.get({id: $stateParams.sourceID});
+        $scope.data = GroupService.get($stateParams);
+    }])
 
     .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
         var id = $stateParams.id;
