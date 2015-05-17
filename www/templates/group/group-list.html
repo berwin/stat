@@ -2,19 +2,19 @@
 <div class="container-fluid">
     <div ng-include src="'../templates/menu.html'"></div>
     <div class="main">
-        <h3 class="sub-header"><a href="#/source">主面板</a> / {{ group.name }}</h3>
+        <h3 class="sub-header"><a href="#/source">主面板</a> / {{ source.name }}</h3>
         <div class="row p10">
             <div class="col-md-6" ng-repeat="item in groups">
                 <div class="source bg-info">
-                    <div ng-click="to('/source/'+ item._id)">
+                    <div ng-click="to('')">
                         <h3 class="m-top-none">{{ item.name }}</h3>
                         <h5>aaa</h5>
                         <h5>aaa</h5>
                         <h5>aaa</h5>
                     </div>
                     <div class="stat-icon"><i class="fa fa-user fa-3x"></i></div>
-                    <div class="box-edit" ng-click="to('/source/'+ item._id +'/edit')"><i class="fa fa-pencil"></i></div>
-                    <div class="box-help" ng-click="to('/source/' + item._id + '/info')"><i class="fa fa-info"></i></div>
+                    <div class="box-edit" ng-click="to('/source/'+ source._id +'/'+ item._id +'/edit')"><i class="fa fa-pencil"></i></div>
+                    <div class="box-help" ng-click="to('/source/'+ source._id +'/'+ item._id +'/info')"><i class="fa fa-info"></i></div>
                 </div>
             </div>
             <div class="col-md-6">

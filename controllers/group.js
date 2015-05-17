@@ -2,7 +2,7 @@
 var groupDB = require( '../db/groupDB' );
 var ObjectID = require( '../db/mongo' ).ObjectID;
 
-exports.create = function (name, sourceID, types, callback) {
+exports.create = function (name, sourceID, keys, values, callback) {
 
     if (name && sourceID) {
 
@@ -10,7 +10,8 @@ exports.create = function (name, sourceID, types, callback) {
             _id : ObjectID().toString(),
             name : name,
             sourceID : sourceID,
-            types : types
+            keys : keys,
+            values : values
         };
 
         groupDB.insert(obj, callback);

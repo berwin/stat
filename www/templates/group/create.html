@@ -2,45 +2,77 @@
 <div class="container-fluid">
     <div ng-include src="'../templates/menu.html'"></div>
     <div class="main">
-        <h3 class="sub-header"><a href="#/source">主面板</a> / {{ data.name }}</h3>
+        <h3 class="sub-header">
+            <a href="#/source">主面板</a> / 
+            <a href="#/source/{{source._id}}">{{ source.name }}</a> / 
+            {{ type === 'create' ? '创建' : '修改' }}
+        </h3>
 
-        <div class="form-horizontal bg-fff">
-            <div class="form-group">
-                <label for="textName" class="col-sm-2 control-label">名称</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" id="textName" placeholder="Name" ng-model="data.name">
-                </div>
-            </div>
+        <div class="form-horizontal bg-fff report_edit">
 
-
-
-            <div class="form-group">
-                <label for="textName" class="col-sm-2 control-label">关键词</label>
-                <div class="col-sm-5">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
+            <dl class="report_block">
+                <dt class="nomarb">基础信息</dt>
+                <dd class="block_con p10">
+                    <div class="form-group">
+                        <label for="textName" class="col-sm-1 control-label">名称</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="textName" placeholder="Name" ng-model="data.name">
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-5">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                </dd>
+            </dl>
+            
+            <dl class="report_block">
+                <dt class="nomarb">Key</dt>
+                <dd class="block_con p10">
+                    <div class="form-group" ng-repeat="item in data.keys">
+                        <label class="col-sm-1 control-label"></label>
+                        <div class="col-sm-5">
+                            <div class="half input-group">
+                                <input type="text" class="form-control key_key" ng-model="item.key" placeholder="object key">
+                                <input type="text" class="form-control key_name" ng-model="item.name" placeholder="display name">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-danger" ng-click="delKey($index)" type="button">Delete</button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-5">
-                    <button class="btn btn_nb_blue" ng-click="">添加</button>
-                </div>
-            </div>
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-5">
+                            <button class="btn btn_nb_blue" ng-click="addKey()">添加Key</button>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
 
+            <dl class="report_block">
+                <dt class="nomarb">Value</dt>
+                <dd class="block_con p10">
+                    <div class="form-group" ng-repeat="item in data.values">
+                        <label class="col-sm-1 control-label"></label>
+                        <div class="col-sm-5">
+                            <div class="half input-group">
+                                <input type="text" class="form-control key_key" ng-model="item.key" placeholder="object key">
+                                <input type="text" class="form-control key_name" ng-model="item.name" placeholder="display name">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-danger" ng-click="delVal($index)" type="button">Delete</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
-
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-5">
+                            <button class="btn btn_nb_blue" ng-click="addVal()">添加Value</button>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+            <button class="btn btn_nb_blue" ng-click="send()">确认</button>
+            <button class="btn btn-danger" ng-if="type === 'edit'" ng-click="del()">删除</button>
         </div>
     </div>
 </div>

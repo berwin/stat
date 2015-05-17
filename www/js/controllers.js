@@ -68,61 +68,6 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         };
     }])
 
-    .controller('consoleCtrl', ['$scope', 'SourceService', 'GroupService', function ($scope, SourceService, GroupService) {
-
-        function consoleInit () {
-
-            var list = SourceService.query();
-
-            $scope.list = list;
-
-            if (!list.length) {
-                $scope.data = {};
-                $scope.groups = [];
-                return;
-            }
-
-            $scope.data = {
-                name : list[0]['name'],
-                _id : list[0]['_id'],
-                token : list[0]['token']
-            };
-
-            gruopsInit($scope.data._id);
-
-        }
-
-        function gruopsInit (projectID) {
-            GroupService.query({projectID : projectID}, function (list) {
-                $scope.groups = list;
-            });
-        }
-
-        consoleInit();
-
-        $scope.change = function (item) {
-            $scope.data = item;
-            gruopsInit(item._id);
-        };
-
-        // delete project
-
-        $scope.remove = function (id) {
-            SourceService.remove({id : id}, function () {
-                consoleInit();
-            });
-        };
-
-        // delete group
-
-        $scope.delete = function (item) {
-            GroupService.remove({id : item._id}, function () {
-                consoleInit();
-            });
-        };
-
-    }])
-
     .controller('sourceCtrl', ['$scope', 'SourceService', '$location', function ($scope, SourceService, $location) {
         $scope.list = SourceService.query();
     }])
@@ -157,36 +102,69 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         $scope.data = SourceService.get($stateParams);
     }])
 
-    .controller('sourceDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
-        $scope.source = SourceService.get($stateParams);
+    .controller('groupListCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
+        $scope.source = SourceService.get({id : $stateParams.sourceID});
         $scope.groups = GroupService.query();
     }])
 
-    .controller('createGroupCtrl', ['$scope', '$location', 'SourceService', 'GroupService', function ($scope, $location, SourceService, GroupService) {
+    .controller('createGroupCtrl', ['$scope', '$location', '$stateParams', 'SourceService', 'GroupService', function ($scope, $location, $stateParams, SourceService, GroupService) {
+        $scope.type = 'create';
+        var sourceID = $stateParams.sourceID;
+        $scope.source = SourceService.get({id: sourceID});
+        $scope.data = { name : '', sourceID : sourceID, keys : [{key : '', name : '', count : 0}], values : [{key : '', name : '', count : 0}] };
 
-        $scope.change = function (item) {
-            $scope.project = item;
+        $scope.addKey = function () {
+            $scope.data.keys.push({ key : '', name : '', count : 0 });
+        };
+        $scope.delKey = function (i) {
+            $scope.data.keys.splice(i, 1);
         };
 
-        $scope.data = {name : '', types : ''};
+        $scope.addVal = function () {
+            $scope.data.values.push({ key : '', name : '', count : 0});
+        };
+        $scope.delVal = function (i) {
+            $scope.data.values.splice(i, 1);
+        };
 
-        $scope.create = function () {
-            if (!$scope.project || !$scope.data.name) return;
-
-            var data = {
-                projectID : $scope.project._id,
-                name : $scope.data.name
-            };
-
-            if (!!$scope.data.types) {
-                data.types = $scope.data.types.split(',');
-            };
-
-            GroupService.save(data, function () {
-                $location.path( '/project/' + $scope.project._id + '/' + $scope.project.name );
+        $scope.send = function () {
+            GroupService.save($scope.data, function () {
+                $location.path( '/source/' + sourceID );
             });
         };
 
+    }])
+
+    .controller('editGroupCtrl', ['$scope', '$location', '$stateParams', 'SourceService', 'GroupService', function ($scope, $location, $stateParams, SourceService, GroupService) {
+        $scope.type = 'edit';
+        var sourceID = $stateParams.sourceID;
+        $scope.source = SourceService.get({id: sourceID});
+        $scope.data = GroupService.get($stateParams);
+
+        $scope.addKey = function () {
+            $scope.data.keys.push({ key : '', name : '', count : 0 });
+        };
+        $scope.delKey = function (i) {
+            $scope.data.keys.splice(i, 1);
+        };
+
+        $scope.addVal = function () {
+            $scope.data.values.push({ key : '', name : '', count : 0});
+        };
+        $scope.delVal = function (i) {
+            $scope.data.values.splice(i, 1);
+        };
+
+        $scope.send = function () {
+            GroupService.update($scope.data, function () {
+                $location.path( '/source/' + sourceID );
+            });
+        };
+        $scope.del = function () {
+            GroupService.delete($stateParams, function () {
+                $location.path( '/source/' + sourceID );
+            });
+        };
     }])
 
     .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {

@@ -5,9 +5,10 @@ var group = require( './group' );
 exports.create = function (req, res) {
     var sourceID = req.params.sourceID;
     var name = req.body.name;
-    var types = req.body.types || [];
+    var keys = req.body.keys || [];
+    var values = req.body.values || [];
 
-    group.create(name, sourceID, types, function (err, result) {
+    group.create(name, sourceID, keys, values, function (err, result) {
         err ? res.status(403).send(err) : res.send(result[0]);
     });
 };

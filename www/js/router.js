@@ -18,12 +18,6 @@ define(function () {
             controller: 'signupCtrl'
         })
 
-        .state('console', {
-            url: '/console',
-            templateUrl: '../templates/console.html',
-            controller: 'consoleCtrl'
-        })
-
         .state('source', {
             url: '/source',
             templateUrl: '../templates/source/source.html',
@@ -35,13 +29,11 @@ define(function () {
             templateUrl: '../templates/source/source-create.html',
             controller: 'sourceCreateCtrl'
         })
-
         .state('source-edit', {
             url: '/source/:id/edit',
             templateUrl: '../templates/source/source-edit.html',
             controller: 'sourceEditCtrl'
         })
-
         .state('source-info', {
             url: '/source/:id/info',
             templateUrl: '../templates/source/source-info.html',
@@ -49,15 +41,19 @@ define(function () {
         })
 
         .state('source-detail', {
-            url: '/source/:id',
-            templateUrl: '../templates/source/source-detail.html',
-            controller: 'sourceDetailCtrl'
+            url: '/source/:sourceID',
+            templateUrl: '../templates/group/group-list.html',
+            controller: 'groupListCtrl'
         })
-
         .state('create-group', {
             url: '/source/:sourceID/create',
             templateUrl: '../templates/group/create.html',
             controller: 'createGroupCtrl'
+        })
+        .state('edit-group', {
+            url: '/source/:sourceID/:id/edit',
+            templateUrl: '../templates/group/create.html',
+            controller: 'editGroupCtrl'
         })
         
 

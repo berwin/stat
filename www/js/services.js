@@ -11,8 +11,10 @@ define(['angular', 'ngResource'], function (angular) {
     }])
 
     .factory('GroupService', ['$resource', '$stateParams', function ($resource, $stateParams) {
-        var sourceID = $stateParams.id;
-        return $resource('/client/:sourceID/group/:id', {sourceID: sourceID, id: '@_id'});
+        var sourceID = $stateParams.sourceID;
+        return $resource('/client/:sourceID/group/:id', {sourceID: sourceID, id: '@_id'},{
+            'update': { method:'PUT' }
+        });
     }])
 
     .factory('ContentService', ['$resource', function ($resource) {

@@ -1,6 +1,6 @@
 ## project
 
-### create project `POST /client/project`
+### create `POST /client/project`
 
 #### Parameters
 
@@ -18,16 +18,28 @@
     }
 
 
-### delete project `DELETE /client/project`
+### delete `DELETE /client/project/54cf386b9604c4560f4a42d2`
+
+
+### update `PUT /client/project/54cf386b9604c4560f4a42d2`
 
 #### Parameters
 
     {
-        id : '54cf386b9604c4560f4a42d2'
+        name : 'name'
+    }
+    
+#### Response
+
+    {
+        _id : '54cf386b9604c4560f4a42d2',
+        userID : 'userID',
+        name : 'name',
+        token : 'token'
     }
 
 
-### get project `GET /client/project`
+### get `GET /client/project`
 
 #### response
 
@@ -40,7 +52,7 @@
         }
     ]
 
-### get project `GET /client/project?id=54cf386b9604c4560f4a42d2`
+### query `GET /client/project/54cf386b9604c4560f4a42d2`
 
 #### response
 
@@ -50,3 +62,4 @@
         name : 'berwin',
         token : 'token'
     }
+
