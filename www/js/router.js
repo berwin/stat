@@ -18,12 +18,11 @@ define(function () {
             controller: 'signupCtrl'
         })
 
-        .state('source', {
+        .state('source-list', {
             url: '/source',
             templateUrl: '../templates/source/source.html',
             controller: 'sourceCtrl'
         })
-
         .state('source-create', {
             url: '/source/create',
             templateUrl: '../templates/source/source-create.html',
@@ -40,25 +39,30 @@ define(function () {
             controller: 'sourceInfoCtrl'
         })
 
-        .state('source-detail', {
+        .state('group-list', {
             url: '/source/:sourceID',
             templateUrl: '../templates/group/list.html',
             controller: 'groupListCtrl'
         })
-        .state('create-group', {
+        .state('group-create', {
             url: '/source/:sourceID/create',
             templateUrl: '../templates/group/create.html',
             controller: 'createGroupCtrl'
         })
-        .state('edit-group', {
+        .state('group-edit', {
             url: '/source/:sourceID/:id/edit',
             templateUrl: '../templates/group/create.html',
             controller: 'editGroupCtrl'
         })
-        .state('edit-info', {
+        .state('group-info', {
             url: '/source/:sourceID/:id/info',
             templateUrl: '../templates/group/info.html',
             controller: 'infoGroupCtrl'
+        })
+        .state('group-detail', {
+            url: '/source/:sourceID/:id',
+            templateUrl: '../templates/group/detail.html',
+            controller: 'groupDetailCtrl'
         })
         
 

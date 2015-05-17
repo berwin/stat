@@ -173,217 +173,61 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
     }])
 
     .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
-        var id = $stateParams.id;
+        $scope.source = SourceService.get({id: $stateParams.sourceID});
+        $scope.group = GroupService.get($stateParams);
 
-        function getToday (str) {
-            var nowDate = null;
-            str ? nowDate = new Date(str) : nowDate = new Date();
-
-            var newDateStr = nowDate.getFullYear() + '-' + ( nowDate.getMonth()+1 ) + '-' + nowDate.getDate();
-
-            return {
-                firstTime : newDateStr + '-00:00:00',
-                lastTime : newDateStr + '-23:59:59'
-            }
-        }
-
-        var oDate = getToday();
-
-        $scope.project = SourceService.get({id : id});
-
-        function iterator (item, i, arr) {
-            ContentService.query({groupID: item._id, firstTime : oDate.firstTime, lastTime : oDate.lastTime}, function (list) {
-                item.contents = list;
-            });
-            ContentService.query({groupID: item._id}, function (list) {
-                item.count = list.length;
-            });
-        }
-
-        GroupService.query({projectID : id}, function (list) {
-            $scope.groups = list;
-
-            list.forEach(iterator);
-
-            renderChart(24, list[0], oDate.firstTime, oDate.lastTime);
-        });
-
-
-        // Click tab
-
-        $scope.tabStat = function (group) {
-            renderChart(24, group, oDate.firstTime, oDate.lastTime);
-        };
-
-        // Highcharts
-
-        function renderChart (leng, group, firstTime, lastTime) {
-
-            var data = {
-                yesterDay : [],
-                toDay : [],
-                async : 0
-            };
-
-            ContentService.query({groupID: group._id, firstTime : firstTime, lastTime : lastTime}, function (list) {
-                data.async++;
-                data.toDay = list;
-
-                if (data.async === 2) highchart(data);
-
-            });
-
-            var yesterDayTime = new Date(firstTime).getTime() - 86400000;
-            var yesterDayDate = getToday(yesterDayTime);
-
-            ContentService.query({groupID: group._id, firstTime : yesterDayDate.firstTime, lastTime : yesterDayDate.lastTime}, function (list) {
-                data.async++;
-                data.yesterDay = list;
-                if (data.async === 2) highchart(data);
-            });
-
-            function getLineChartPoints (list) {
-                list.sort(function (a, b) {
-                    return a.time - b.time;
-                });
-
-                var arr = list.map(function (item) {
-                    item.hours = new Date(item.time).getHours();
-                    return item;
-                });
-
-                var points = [];
-                for (var i = 0; i < leng; i++) {
-                    var c = 0;
-
-                    for (var j = 0; j <arr .length; j++) {
-                        if( arr[j].hours === i ) c++;
-                    }
-
-                    points.push(c);
-                }
-                return points;
-            }
-
-            function getColumnPoints (list) {
-
-                function hasColumnName (arr, item) {
-                    var temp = false;
-                    for (var i = 0; i < arr.length; i++) {
-                        if (arr[i].name === item) temp = true;
-                    }
-                    return temp;
-                }
-
-                var columns = [];
-
-                for (var i = 0; i < list.length; i++) {
-                    
-                    if (hasColumnName(columns, list[i].type)) {
-                        for (var j = 0; j < columns.length; j++) {
-                            if (columns[j].name === list[i].type) columns[j].y++;
-                        };
-                    } else {
-                        var obj = { name : list[i].type , y : 1 };
-                        columns.push( obj );
-                    }
-                };
-
-                // default
-                if (columns.length === 0 && group.types.length > 0) {
-                    for (var i = 0; i < group.types.length; i++) {
-                        columns.push({ name : group.types[i], y : 0 });
-                    }
-                } else {
-                    columns.push({ name : 'default', y : 0 });
-                }
-
-                return columns;
-            }
-
-            function highchart (data) {
-
-                // Line Charts
-
-                var todayPoints = getLineChartPoints(data.toDay);
-                var yesterDay = getLineChartPoints(data.yesterDay);
-
-                var categories = [];
-                for (var i = 0; i < leng; i++) {
-                    categories[i] = i + '点';
-                }
-
-                $('#basics-chart').highcharts({
-                    title: {
-                        text: group.name,
-                        x: -20 //center
-                    },
-                    yAxis: { title: { text : ''} },
-                    credits: { enabled:false },
-                    xAxis: {
-                        categories: categories
-                    },
-                    tooltip: {
-                        valueSuffix: '条'
-                    },
-                    plotOptions: {
-                        line: {
-                            dataLabels: { enabled: true },
-                            marker: { enabled: false }
-                        }
-                    },
-                    series: [{
-                        name: '今天',
-                        data: todayPoints
-                    }, {
-                        name: '昨天',
-                        data: yesterDay
-                    }]
-                });
-
-
-                // Column Charts
-
-                var columns = getColumnPoints(data.toDay);
-
-                $('#column').highcharts({
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: group.name
-                    },
-                    xAxis: {
-                        type: 'category'
-                    },
-                    yAxis: { title: { text: '' } },
-                    credits: { enabled:false },
-                    legend: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            borderWidth: 0,
-                            dataLabels: {
+        $('#chart').highcharts({
+            chart: {
+                type: 'spline',
+                borderWidth: 0
+            },
+            title: {text: null},
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: {
                                 enabled: true,
-                                format: '{point.y:.0f}'
+                                shadow: false,
+                                radius: 2
                             }
                         }
                     },
-
-                    tooltip: {
-                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> 条数据<br/>'
-                    },
-
-                    series: [{
-                        name: group.name,
-                        colorByPoint: true,
-                        data: columns
-                    }]
-                });
-            }
-        }
-
+                    lineWidth : 1
+                }
+            },
+            subtitle: {
+                text: null
+            },
+            xAxis: {
+                type : 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: null
+                }
+            },
+            legend:{
+                enabled:false
+             },
+            series: [{
+                name: 'Tokyo',
+                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+            }, {
+                name: 'New York',
+                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+            }, {
+                name: 'Berlin',
+                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+            }, {
+                name: 'London',
+                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+            }]
+        });
     }])
 });
