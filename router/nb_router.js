@@ -12,6 +12,7 @@ var controller = require( '../controllers/controller' );
 var user = require( '../controllers/user' );
 var source = require( '../controllers/source_ctrl' );
 var group = require( '../controllers/group_ctrl' );
+var content = require( '../controllers/content_ctrl' );
 
 router.get( '/stat/:projectID/js', controller.getStatJS );
 router.get( '/stat/:projectID/stat', controller.stat );
@@ -35,5 +36,7 @@ router.get( '/client/:sourceID/group/:id', group.get );
 router.delete( '/client/:sourceID/group/:id', group.remove );
 router.put( '/client/:sourceID/group/:id', group.update );
 
+router.get('/client/:sourceID/group/:groupID/content', content.query);
+router.delete( '/client/:sourceID/group/:groupID/content/:id', content.delete );
 
 module.exports = router;

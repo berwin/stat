@@ -88,12 +88,14 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         $scope.data = SourceService.get($stateParams);
 
         $scope.update = function () {
-            SourceService.update($stateParams, $scope.data);
+            SourceService.update($stateParams, $scope.data, function () {
+                $location.path('#/source');
+            });
         }
 
         $scope.delete = function () {
             SourceService.delete($stateParams, function () {
-                $location.path('/');
+                $location.path('#/source');
             });
         }
     }])
@@ -104,7 +106,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
 
     .controller('groupListCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
         $scope.source = SourceService.get({id : $stateParams.sourceID});
-        $scope.groups = GroupService.query();
+        $scope.groups = GroupService.query({sourceID : $stateParams.sourceID});
     }])
 
     .controller('createGroupCtrl', ['$scope', '$location', '$stateParams', 'SourceService', 'GroupService', function ($scope, $location, $stateParams, SourceService, GroupService) {
@@ -128,7 +130,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         };
 
         $scope.send = function () {
-            GroupService.save($scope.data, function () {
+            GroupService.save({sourceID: $stateParams.sourceID}, $scope.data, function () {
                 $location.path( '/source/' + sourceID );
             });
         };
@@ -175,12 +177,16 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
     .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
         $scope.source = SourceService.get({id: $stateParams.sourceID});
         $scope.group = GroupService.get($stateParams);
+        $scope.content = ContentService.query({sourceID: $stateParams.sourceID, groupID: $stateParams.id});
 
         $('#chart').highcharts({
             chart: {
                 type: 'spline',
+                height: 260,
                 borderWidth: 0
             },
+            credits: { enabled:false },
+            legend:{enabled:false},
             title: {text: null},
             tooltip: {
                 shared: true,
@@ -201,9 +207,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
                     lineWidth : 1
                 }
             },
-            subtitle: {
-                text: null
-            },
+            subtitle: { text: null },
             xAxis: {
                 type : 'datetime'
             },
@@ -212,9 +216,6 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
                     text: null
                 }
             },
-            legend:{
-                enabled:false
-             },
             series: [{
                 name: 'Tokyo',
                 data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]

@@ -17,7 +17,8 @@ a:hover{text-decoration:none;}
 .p20{padding:20px;}
 body{background:#f9f9f9;}
 .bg-fff{background:#fff;}
-#nprogress .bar{background:#6bafbd;top:50px;}
+/*#nprogress .bar{background:#6bafbd;top:50px;}*/
+#nprogress .bar{background:#fc8675;top:50px;}
 .navbar-fixed-top{z-index:1032;}
 .bg-fff{background:#fff;}
 .h1, .h2, .h3, h1, h2, h3{margin-top:10px;}
@@ -266,3 +267,5 @@ transition: all .2s ease;
   border-bottom:none !important;
   border-top:none !important;
 }
+
+.table a{color:#23527c;text-decoration:underline;}

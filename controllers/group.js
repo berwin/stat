@@ -21,19 +21,7 @@ exports.create = function (name, sourceID, keys, values, callback) {
     }
 };
 
-exports.remove = function (id, callback) {
-    id ? groupDB.remove(id, callback) : callback( 'no groupID' );
-};
-
-exports.update = function (id, name, callback) {
-
-    if (id && name) {
-        groupDB.update(id, {name : name}, callback);
-    }else{
-        callback('no groupID or name');
-    }
-
-};
-
+exports.remove = groupDB.remove;
+exports.update = groupDB.update;
 exports.getGroupById = groupDB.getGroupById;
 exports.getGroupBySourceId = groupDB.getGroupBySourceId;

@@ -40,8 +40,16 @@ exports.remove = function (req, res) {
 exports.update = function (req, res) {
     var id = req.params.id;
     var name = req.body.name;
+    var keys = req.body.keys;
+    var values = req.body.values;
     
-    group.update(id, name, function (err, result) {
+    var data = {
+        name : name,
+        keys : keys,
+        values : values
+    };
+
+    group.update(id, data, function (err, result) {
         err ? res.status(403).send(err) : res.send(result);
     });
 };

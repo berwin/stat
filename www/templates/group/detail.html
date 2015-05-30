@@ -9,51 +9,20 @@
         <div class="bg-fff">
             <div id="chart"></div>
 
-            <div id="showkeys">
-                <table class="table scroll">
+            <div>
+                <table class="table">
                     <thead>
                         <tr class="inbox-item keytexts">
                             <th>count</th>
-                            <th>SUID</th>
-                            <th>SQID</th>
-                            <th>load</th>
-                            <th>executed</th>
-                            <th>open</th>
-                            <th>show price</th>
-                            <th>CTR</th>
+                            <th ng-repeat="item in group.keys">{{item.name}}</th>
+                            <th ng-repeat="item in group.values">{{item.name}}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="inbox-item">
-                            <td>16</td>
-                            <td>4</td>
-                            <td class="keyin" keydata="32958bca974467b15c3d6df46db2ce22">32958bca974467b15c3d6df46db2ce22</td>
-                            <td>8</td>
-                            <td>8</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-
-                        <tr class="inbox-item">
-                            <td>68</td>
-                            <td>2</td>
-                            <td class="keyin" keydata="6310c60fcd71c0e77fa29f1bb61359cc">6310c60fcd71c0e77fa29f1bb61359cc</td>
-                            <td>26</td>
-                            <td>26</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0.08</td>
-                        </tr>
-                        <tr class="inbox-item">
-                            <td>1,046</td>
-                            <td>2</td>
-                            <td class="keyin" keydata="f24ba486f5f5f76a1ccbf915a2382112">f24ba486f5f5f76a1ccbf915a2382112</td>
-                            <td>419</td>
-                            <td>414</td>
-                            <td>8</td>
-                            <td>1</td>
-                            <td>0.02</td>
+                        <tr class="inbox-item" ng-repeat="item in content">
+                            <td>{{item.count || 0}}</td>
+                            <td><a href="">{{item.key || 0}}</a></td>
+                            <td ng-repeat="val in group.values">{{ item.values[ val.key ] }}</td>
                         </tr>
                     </tbody>
                 </table>
