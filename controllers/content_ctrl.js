@@ -40,7 +40,17 @@ exports.query = function (req, res) {
     var sourceID = req.params.sourceID;
     var groupID = req.params.groupID;
     var dates = req.query.dates;
-    var search = req.query.search;
+
+    var key = req.query.key;
+    var search = req.query.search || '{}';
+    search = JSON.parse(search);
+
+    var filter = {
+        sourceID: sourceID,
+        groupID: groupID
+    }
+
+    filter[search.key] = search.val;
 
     async.waterfall([groupInfo, searchKeys, searchValue], result);
 
@@ -49,21 +59,21 @@ exports.query = function (req, res) {
     }
 
     function searchKeys (group, done) {
-        var key = group.keys[0].key;
-        contentDB.getKeyCount('$data.'+key, sourceID, groupID, function (err, list) {
+        console.log(filter)
+        contentDB.getKeyList(filter, '$data.'+key, function (err, list) {
             done(err, group, list);
         });
     }
 
     function searchValue (group, list, done) {
-
-        var key = group.keys[0].key;
         var arr = [];
 
         async.each(list, iterator, callback);
 
         function iterator (item, _done) {
-            contentDB.getValueCount('data.'+key, item._id, sourceID, groupID, function (err, _list) {
+            filter['data.'+key] = item._id;
+
+            contentDB.getValueList(filter, function (err, _list) {
                 var obj = {
                     key: item._id,
                     count: item.count,

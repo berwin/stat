@@ -175,9 +175,16 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
     }])
 
     .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
-        $scope.source = SourceService.get({id: $stateParams.sourceID});
-        $scope.group = GroupService.get($stateParams);
-        $scope.content = ContentService.query({sourceID: $stateParams.sourceID, groupID: $stateParams.id});
+        $scope.sourceID = $stateParams.sourceID;
+        $scope.groupID = $stateParams.id;
+
+        $scope.source = SourceService.get({id: $scope.sourceID});
+        GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID}, function (group) {
+            group.keys.splice(1);
+            $scope.group = group;
+
+            $scope.content = ContentService.query({sourceID: $stateParams.sourceID, groupID: $stateParams.id, key: group.keys[0].key});
+        });
 
         $('#chart').highcharts({
             chart: {
@@ -230,5 +237,19 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
                 data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
             }]
         });
+    }])
+
+    .controller('contentCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
+        var sourceID = $stateParams.sourceID;
+        var groupID = $stateParams.id;
+
+        $scope.source = SourceService.get({id: sourceID});
+        GroupService.get({sourceID: sourceID, id: groupID}, function (group) {
+            group.keys.splice(1);
+            $scope.group = group;
+        });
+        
+        var filter = { key: 'data.'+ $stateParams.key, val: $stateParams.val}
+        $scope.content = ContentService.query({sourceID: sourceID, groupID: groupID, key: 'SU', search: filter});
     }])
 });
