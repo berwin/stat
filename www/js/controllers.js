@@ -238,18 +238,4 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
             }]
         });
     }])
-
-    .controller('contentCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
-        var sourceID = $stateParams.sourceID;
-        var groupID = $stateParams.id;
-
-        $scope.source = SourceService.get({id: sourceID});
-        GroupService.get({sourceID: sourceID, id: groupID}, function (group) {
-            group.keys.splice(1);
-            $scope.group = group;
-        });
-        
-        var filter = { key: 'data.'+ $stateParams.key, val: $stateParams.val}
-        $scope.content = ContentService.query({sourceID: sourceID, groupID: groupID, key: 'SU', search: filter});
-    }])
 });
