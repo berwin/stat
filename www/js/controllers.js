@@ -183,7 +183,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
             group.keys.splice(1);
             $scope.group = group;
 
-            $scope.content = ContentService.query({sourceID: $stateParams.sourceID, groupID: $stateParams.id, key: group.keys[0].key});
+            $scope.content = ContentService.query({sourceID: $stateParams.sourceID, groupID: $stateParams.id, search: ''});
         });
 
         $('#chart').highcharts({
