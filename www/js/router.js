@@ -64,6 +64,11 @@ define(function () {
             templateUrl: '../templates/group/detail.html',
             controller: 'groupDetailCtrl'
         })
+        .state('content', {
+            url: '/source/:sourceID/:groupID/:search',
+            templateUrl: '../templates/group/detail.html',
+            controller: 'contentCtrl'
+        })
         
 
         $urlRouterProvider.otherwise( '/source' );

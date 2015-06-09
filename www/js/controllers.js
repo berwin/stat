@@ -179,12 +179,8 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         $scope.groupID = $stateParams.id;
 
         $scope.source = SourceService.get({id: $scope.sourceID});
-        GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID}, function (group) {
-            group.keys.splice(1);
-            $scope.group = group;
-
-            $scope.content = ContentService.query({sourceID: $stateParams.sourceID, groupID: $stateParams.id, search: ''});
-        });
+        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID});
+        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: ''});
 
         $('#chart').highcharts({
             chart: {
@@ -237,5 +233,15 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
                 data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
             }]
         });
+    }])
+
+    .controller('contentCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
+        $scope.search = $stateParams.search;
+        $scope.sourceID = $stateParams.sourceID;
+        $scope.groupID = $stateParams.groupID;
+
+        $scope.source = SourceService.get({id: $scope.sourceID});
+        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID});
+        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: $scope.search});
     }])
 });
