@@ -236,12 +236,12 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
     }])
 
     .controller('contentCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
-        $scope.search = $stateParams.search;
+        $scope.search = $stateParams.search + ',';
         $scope.sourceID = $stateParams.sourceID;
         $scope.groupID = $stateParams.groupID;
 
         $scope.source = SourceService.get({id: $scope.sourceID});
         $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID});
-        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: $scope.search});
+        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: $stateParams.search});
     }])
 });

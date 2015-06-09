@@ -21,8 +21,7 @@
                     <tbody>
                         <tr class="inbox-item" ng-repeat="item in content">
                             <td>{{item.count || 0}}</td>
-                            <td ng-if="search"><a href="#/source/{{sourceID}}/{{groupID}}/{{search}},{{item.key}}">{{item.key || 0}}</a></td>
-                            <td ng-if="!search"><a href="#/source/{{sourceID}}/{{groupID}}/{{item.key}}">{{item.key || 0}}</a></td>
+                            <td><a href="#/source/{{sourceID}}/{{groupID}}/{{search}}{{item.key}}">{{item.key || 0}}</a></td>
                             <td ng-repeat="val in group.values">{{ item.values[ val.key ] }}</td>
                         </tr>
                     </tbody>
