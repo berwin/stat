@@ -179,8 +179,10 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         $scope.groupID = $stateParams.id;
 
         $scope.source = SourceService.get({id: $scope.sourceID});
-        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID});
+        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: ''});
         $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: ''});
+
+        $scope.nowIndex = 0;
 
         $('#chart').highcharts({
             chart: {
@@ -241,7 +243,9 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         $scope.groupID = $stateParams.groupID;
 
         $scope.source = SourceService.get({id: $scope.sourceID});
-        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID});
+        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search});
         $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: $stateParams.search});
+
+        $scope.nowIndex = $stateParams.search.split(',').length;
     }])
 });
