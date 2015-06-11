@@ -24,17 +24,28 @@ router.get( '/logout', user.logout );
 
 router.all('/client/*', controller.isLogin );
 
-router.post( '/client/source', source.save );
-router.get( '/client/source',  source.query );
-router.get( '/client/source/:id',  source.get );
-router.delete( '/client/source/:id',  source.remove );
-router.put( '/client/source/:id',  source.update );
+// -- source
 
-router.post( '/client/:sourceID/group', group.create );
-router.get( '/client/:sourceID/group', group.query );
-router.get( '/client/:sourceID/group/:id', group.get );
-router.delete( '/client/:sourceID/group/:id', group.remove );
-router.put( '/client/:sourceID/group/:id', group.update );
+router.route( '/client/source' )
+    .post( source.save )
+    .get( source.query );
+
+router.route( '/client/source/:id' )
+    .get( source.get )
+    .delete( source.remove )
+    .put( source.update );
+
+// -- group
+
+router.route( '/client/:sourceID/group' )
+    .post( group.create )
+    .get( group.query );
+
+router.route( '/client/:sourceID/group/:id' )
+    .get( group.get )
+    .delete( group.remove )
+    .put( group.update );
+
 
 router.get('/client/:sourceID/group/:groupID/content', content.query);
 router.delete( '/client/:sourceID/group/:groupID/content/:id', content.delete );
