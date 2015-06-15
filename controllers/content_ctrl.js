@@ -58,8 +58,9 @@ exports.query = function (req, res) {
                 filter[ 'data.'+info.keys[i].key ] = keys[i];
             }
 
-            key = info.keys[ keys.length ].key;
+            if (info.keys[ keys.length ]) key = info.keys[ keys.length ].key;
 
+            if (!info.keys[ keys.length ]) return res.send();
             done(err, info);
         });
     }
