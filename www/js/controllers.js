@@ -199,6 +199,11 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
         function highchart (list) {
             var points = getLineChartPoints(list);
 
+            var categories = [];
+            for (var i = 0; i < 24; i++) {
+                categories[i] = i + '点';
+            }
+
             $('#chart').highcharts({
                 chart: {
                     type: 'spline',
@@ -229,7 +234,8 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
                 },
                 subtitle: { text: null },
                 xAxis: {
-                    type : 'datetime'
+                    type : 'datetime',
+                    categories: categories
                 },
                 yAxis: {
                     title: {
