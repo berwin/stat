@@ -27,6 +27,10 @@ exports.getValueList = function (filter, callback) {
     contentDB.aggregate({$match: filter}, {$group : {_id : '$data.value', count : {$sum : 1}}}, callback);
 };
 
+exports.getContentsByfilter = function (filter, callback) {
+    contentDB.find(filter).toArray(callback);
+};
+
 exports.getContentsByType = function (groupID, type, callback) {
     contentDB.find({ groupID : groupID, type : type }).toArray(callback);
 };

@@ -48,6 +48,7 @@ router.route( '/client/:sourceID/group/:id' )
 
 
 router.get('/client/:sourceID/group/:groupID/content', content.query);
+router.get('/client/:sourceID/group/:groupID/contentByTime/:time', content.queryByTime);
 router.delete( '/client/:sourceID/group/:groupID/content/:id', content.delete );
 
 module.exports = router;

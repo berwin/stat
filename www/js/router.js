@@ -64,10 +64,10 @@ define(function () {
             templateUrl: '../templates/group/detail.html',
             controller: 'groupDetailCtrl'
         })
-        .state('content', {
-            url: '/source/:sourceID/:groupID/:search',
+        .state('group-detail-search', {
+            url: '/source/:sourceID/:id/:search',
             templateUrl: '../templates/group/detail.html',
-            controller: 'contentCtrl'
+            controller: 'groupDetailCtrl'
         })
         
 

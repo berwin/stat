@@ -1,16 +1,17 @@
 'use strict';
 
-var async = require( 'async' );
-var groupDB = require( '../db/groupDB' );
-var contentDB = require( '../db/contentDB' );
-var ObjectID = require( '../db/mongo' ).ObjectID;
+var async = require( 'async' ),
+    groupDB = require( '../db/groupDB' ),
+    contentDB = require( '../db/contentDB' ),
+    ObjectID = require( '../db/mongo' ).ObjectID,
+    content = require('./content');
 
 exports.createContent = function (req, res) {
-    var groupID = req.body.groupID;
-    var sourceID = req.body.sourceID;
-    var data = req.body.data || {};
-    data.value = data.value || '';
+    var groupID = req.body.groupID,
+        sourceID = req.body.sourceID,
+        data = req.body.data || {};
 
+    data.value = data.value || '';
 
     if( !groupID || !sourceID ) res.status(403).send('no groupID or sourceID');
 
@@ -37,16 +38,20 @@ exports.delete = function (req, res) {
 };
 
 exports.query = function (req, res) {
-    var sourceID = req.params.sourceID;
-    var groupID = req.params.groupID;
-    var dates = req.query.dates;
-    var search = req.query.search || '';
-    var keys = search ? search.split(',') : [];
-    var key = '';
+
+    var sourceID = req.params.sourceID,
+        groupID = req.params.groupID,
+        search = req.query.search || '',
+        keys = search ? search.split(',') : [],
+        time = req.query.time.split('-'),
+        firstTime = Number( time[0] ),
+        lastTime = Number( time[1] ),
+        key = '';
 
     var filter = {
         sourceID: sourceID,
-        groupID: groupID
+        groupID: groupID,
+        time : { $gte : firstTime, $lte : lastTime }
     }
 
     async.waterfall([groupInfo, searchKeys, searchValue], result);
@@ -114,7 +119,20 @@ exports.query = function (req, res) {
     }
 };
 
+exports.queryByTime = function (req, res) {
 
+    var sourceID = req.params.sourceID,
+        groupID = req.params.groupID,
+        search = req.query.search || '',
+        keys = search ? search.split(',') : [],
+        time = req.params.time.split('-'),
+        firstTime = Number( time[0] ),
+        lastTime = Number( time[1] );
+
+    content.queryByTime(groupID, firstTime, lastTime, keys, function (err, list) {
+        err ? res.status(500).send(err) : res.send(list);
+    });
+};
 
 
 

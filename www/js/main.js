@@ -9,7 +9,8 @@ requirejs.config({
         'jquery' : '../lib/jquery/dist/jquery.min',
         'bootstrap' : '../lib/bootstrap/dist/js/bootstrap.min',
         'NProgress' : '../lib/nprogress/nprogress',
-        'highcharts' : '../lib/highcharts/highcharts'
+        'highcharts' : '../lib/highcharts/highcharts',
+        'moment': '../lib/moment/min/moment.min'
     },
 
     shim : {
@@ -37,6 +38,9 @@ requirejs.config({
         'highcharts' : {
             exports : 'highcharts',
             deps : ['jquery']
+        },
+        'moment': {
+            exports : 'moment'
         }
     }
 });

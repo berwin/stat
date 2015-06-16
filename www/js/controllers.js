@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'highcharts'], function (angular, highcharts) {
+define(['angular', 'highcharts', 'moment'], function (angular, highcharts, moment) {
 
     angular.module('stat.controllers', [])
 
@@ -174,78 +174,100 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         $scope.data = GroupService.get($stateParams);
     }])
 
-    .controller('groupDetailCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
+    .controller('groupDetailCtrl', ['$scope', '$stateParams', '$http', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, $http, SourceService, GroupService, ContentService) {
         $scope.sourceID = $stateParams.sourceID;
         $scope.groupID = $stateParams.id;
-
-        $scope.source = SourceService.get({id: $scope.sourceID});
-        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: ''});
-        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: ''});
-
+        $scope.search = '';
         $scope.nowIndex = 0;
 
-        $('#chart').highcharts({
-            chart: {
-                type: 'spline',
-                height: 260,
-                borderWidth: 0
-            },
-            credits: { enabled:false },
-            legend:{enabled:false},
-            title: {text: null},
-            tooltip: {
-                shared: true,
-                crosshairs: true
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false,
-                        states: {
-                            hover: {
-                                enabled: true,
-                                shadow: false,
-                                radius: 2
-                            }
-                        }
-                    },
-                    lineWidth : 1
-                }
-            },
-            subtitle: { text: null },
-            xAxis: {
-                type : 'datetime'
-            },
-            yAxis: {
-                title: {
-                    text: null
-                }
-            },
-            series: [{
-                name: 'Tokyo',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-            }, {
-                name: 'New York',
-                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-            }, {
-                name: 'Berlin',
-                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-            }, {
-                name: 'London',
-                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-            }]
-        });
-    }])
+        var toDay = moment().startOf('day').format('x') + '-' + moment().endOf('day').format('x');
 
-    .controller('contentCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, SourceService, GroupService, ContentService) {
-        $scope.search = $stateParams.search + ',';
-        $scope.sourceID = $stateParams.sourceID;
-        $scope.groupID = $stateParams.groupID;
+        if ($stateParams.search) {
+            $scope.search = $stateParams.search + ',';
+            $scope.nowIndex = $stateParams.search.split(',').length;
+        }
 
         $scope.source = SourceService.get({id: $scope.sourceID});
         $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search});
-        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, search: $stateParams.search});
+        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, time: toDay, search: $stateParams.search});
 
-        $scope.nowIndex = $stateParams.search.split(',').length;
+        var url = '/client/'+ $scope.sourceID +'/group/'+ $scope.groupID +'/contentByTime/' + toDay + '?search=' + ($stateParams.search || '');
+        $http.get(url).success(function (list) {
+            highchart(list);
+        });
+
+        function highchart (list) {
+            var points = getLineChartPoints(list);
+
+            $('#chart').highcharts({
+                chart: {
+                    type: 'spline',
+                    height: 260,
+                    borderWidth: 0
+                },
+                credits: { enabled:false },
+                legend:{enabled:false},
+                title: {text: null},
+                tooltip: {
+                    shared: true,
+                    crosshairs: true
+                },
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: false,
+                            states: {
+                                hover: {
+                                    enabled: true,
+                                    shadow: false,
+                                    radius: 2
+                                }
+                            }
+                        },
+                        lineWidth : 1
+                    }
+                },
+                subtitle: { text: null },
+                xAxis: {
+                    type : 'datetime'
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    }
+                },
+                series: [{
+                    name: '今天',
+                    data: points
+                }]
+            });
+        }
     }])
 });
+
+
+
+function getLineChartPoints (list) {
+    var leng = 24;
+
+    list.sort(function (a, b) {
+        return a.time - b.time;
+    });
+
+    var arr = list.map(function (item) {
+        item.hours = new Date(item.time).getHours();
+        return item;
+    });
+
+    var points = [];
+    for (var i = 0; i < leng; i++) {
+        var c = 0;
+
+        for (var j = 0; j <arr .length; j++) {
+            if( arr[j].hours === i ) c++;
+        }
+
+        points.push(c);
+    }
+    return points;
+}
