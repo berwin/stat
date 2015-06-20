@@ -60,12 +60,12 @@ define(function () {
             controller: 'infoGroupCtrl'
         })
         .state('group-detail', {
-            url: '/source/:sourceID/:id',
+            url: '/source/:sourceID/:id/:time',
             templateUrl: '../templates/group/detail.html',
             controller: 'groupDetailCtrl'
         })
         .state('group-detail-search', {
-            url: '/source/:sourceID/:id/:search',
+            url: '/source/:sourceID/:id/:time/:search',
             templateUrl: '../templates/group/detail.html',
             controller: 'groupDetailCtrl'
         })

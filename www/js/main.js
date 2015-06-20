@@ -10,7 +10,8 @@ requirejs.config({
         'bootstrap' : '../lib/bootstrap/dist/js/bootstrap.min',
         'NProgress' : '../lib/nprogress/nprogress',
         'highcharts' : '../lib/highcharts/highcharts',
-        'moment': '../lib/moment/min/moment.min'
+        'moment': '../lib/moment/min/moment.min',
+        'kalendae': '../lib/chipersoft-kalendae/build/kalendae.standalone'
     },
 
     shim : {
@@ -41,6 +42,10 @@ requirejs.config({
         },
         'moment': {
             exports : 'moment'
+        },
+        'kalendae': {
+            exports : 'kalendae',
+            deps : ['moment']
         }
     }
 });

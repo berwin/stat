@@ -1,7 +1,6 @@
 'use strict';
 
-define(['angular', 'highcharts', 'moment'], function (angular, highcharts, moment) {
-
+define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highcharts, moment, kalendae) {
     angular.module('stat.controllers', [])
 
     .controller('navCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
@@ -107,6 +106,7 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
     .controller('groupListCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
         $scope.source = SourceService.get({id : $stateParams.sourceID});
         $scope.groups = GroupService.query({sourceID : $stateParams.sourceID});
+        $scope.time = moment().startOf('day').format('x') + '-' + moment().endOf('day').format('x');
     }])
 
     .controller('createGroupCtrl', ['$scope', '$location', '$stateParams', 'SourceService', 'GroupService', function ($scope, $location, $stateParams, SourceService, GroupService) {
@@ -177,24 +177,40 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
     .controller('groupDetailCtrl', ['$scope', '$stateParams', '$http', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, $http, SourceService, GroupService, ContentService) {
         $scope.sourceID = $stateParams.sourceID;
         $scope.groupID = $stateParams.id;
+        $scope.time = $stateParams.time;
         $scope.search = '';
         $scope.nowIndex = 0;
-
-        var toDay = moment().startOf('day').format('x') + '-' + moment().endOf('day').format('x');
 
         if ($stateParams.search) {
             $scope.search = $stateParams.search + ',';
             $scope.nowIndex = $stateParams.search.split(',').length;
         }
 
-        $scope.source = SourceService.get({id: $scope.sourceID});
-        $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search});
-        $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, time: toDay, search: $stateParams.search});
+        console.log(moment('06/17/2015', "MM/DD/YYYY"))
 
-        var url = '/client/'+ $scope.sourceID +'/group/'+ $scope.groupID +'/contentByTime/' + toDay + '?search=' + ($stateParams.search || '');
-        $http.get(url).success(function (list) {
-            highchart(list);
+        new Kalendae.Input('date-input', {
+            months: 1,
+            selected: Kalendae.moment( Number($scope.time.substring(0, $scope.time.indexOf('-'))) ),
+            subscribe: {
+                hide: function () {
+                    var date = this.getSelected();
+                    $scope.time = moment(date, 'MM/DD/YYYY').startOf('day').format('x') + '-' + moment(date, 'MM/DD/YYYY').endOf('day').format('x');
+                    request($scope.time);
+                }
+            }
         });
+
+        function request (time) {
+            $scope.source = SourceService.get({id: $scope.sourceID});
+            $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search});
+            $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, time: time, search: $stateParams.search});
+
+            var url = '/client/'+ $scope.sourceID +'/group/'+ $scope.groupID +'/contentByTime/' + time + '?search=' + ($stateParams.search || '');
+            $http.get(url).success(function (list) {
+                highchart(list);
+            });
+        }
+        request( $scope.time );
 
         function highchart (list) {
             var points = getLineChartPoints(list);

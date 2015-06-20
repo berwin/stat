@@ -20,6 +20,7 @@ body{background:#f9f9f9;}
 /*#nprogress .bar{background:#6bafbd;top:50px;}*/
 #nprogress .bar{background:#fc8675;top:50px;}
 .navbar-fixed-top{z-index:1032;}
+.kalendae *{box-sizing:initial!important;}
 .bg-fff{background:#fff;}
 .h1, .h2, .h3, h1, h2, h3{margin-top:10px;}
 
@@ -250,22 +251,13 @@ input.form-control.key_name{width: 50%;background-color: #eee;border: 1px solid 
 
 /* group detail */
 
-.keytexts{
-    background-color:#f5f5f5;  
-}
-
-.inbox-item {
-border:1px solid #f1f5fc ;
-color: #777;
-border-radius: 0px;
-font-size: 12px;
-transition: all .2s ease;
--webkit-transition: all .2s ease;
-}
+.keytexts{background-color:#f5f5f5;}
+.inbox-item {border:1px solid #f1f5fc ;color: #777;border-radius: 0px;font-size: 12px;transition: all .2s ease;-webkit-transition: all .2s ease;}
 .inbox-item th,
-.inbox-item td{
-  border-bottom:none !important;
-  border-top:none !important;
-}
-
+.inbox-item td{border-bottom:none !important;border-top:none !important;}
 .table a{color:#23527c;text-decoration:underline;}
+
+.tool .date-input{width:175px;height:29px;}
+
+
+
