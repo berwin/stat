@@ -210,17 +210,17 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
                     name: $scope.group.keys[$scope.nowIndex].name,
                     data: keysPoints
                 });
-
-                var valuesPoints = getValueChartPoints(list, $scope.group.values);
-                series.push({
-                    name: valuesPoints[0].name,
-                    data: valuesPoints[0].points
-                });
-                series.push({
-                    name: valuesPoints[1].name,
-                    data: valuesPoints[1].points
-                });
             }
+
+            var valuesPoints = getValueChartPoints(list, $scope.group.values);
+            series.push({
+                name: valuesPoints[0].name,
+                data: valuesPoints[0].points
+            });
+            series.push({
+                name: valuesPoints[1].name,
+                data: valuesPoints[1].points
+            });
 
             var categories = [];
             for (var i = 0; i < 24; i++) {
