@@ -199,6 +199,29 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
         function highchart (list) {
             var points = getLineChartPoints(list);
 
+            var series = [{
+                name: 'count',
+                data: points
+            }];
+
+            if ($scope.group.keys[$scope.nowIndex]) {
+                var keysPoints = getKeyChartPoints(list, $scope.group.keys[$scope.nowIndex].name);
+                series.push({
+                    name: $scope.group.keys[$scope.nowIndex].name,
+                    data: keysPoints
+                });
+
+                var valuesPoints = getValueChartPoints(list, $scope.group.values);
+                series.push({
+                    name: valuesPoints[0].name,
+                    data: valuesPoints[0].points
+                });
+                series.push({
+                    name: valuesPoints[1].name,
+                    data: valuesPoints[1].points
+                });
+            }
+
             var categories = [];
             for (var i = 0; i < 24; i++) {
                 categories[i] = i + '点';
@@ -242,10 +265,7 @@ define(['angular', 'highcharts', 'moment'], function (angular, highcharts, momen
                         text: null
                     }
                 },
-                series: [{
-                    name: '今天',
-                    data: points
-                }]
+                series: series
             });
         }
     }])
@@ -269,7 +289,7 @@ function getLineChartPoints (list) {
     for (var i = 0; i < leng; i++) {
         var c = 0;
 
-        for (var j = 0; j <arr .length; j++) {
+        for (var j = 0; j < arr.length; j++) {
             if( arr[j].hours === i ) c++;
         }
 
@@ -277,3 +297,71 @@ function getLineChartPoints (list) {
     }
     return points;
 }
+
+function getKeyChartPoints (list, key) {
+    var leng = 24;
+
+    list.sort(function (a, b) {
+        return a.time - b.time;
+    });
+
+    var arr = list.map(function (item) {
+        item.hours = new Date(item.time).getHours();
+        return item;
+    });
+
+    var points = [];
+
+    for (var i = 0; i < leng; i++) {
+        var c = 0;
+        var json = {};
+
+        for (var j = 0; j < arr.length; j++) {
+            if (arr[j].hours === i && !json[ arr[j].data[key] ]) {
+                c++;
+                json[ arr[j].data[key] ] = 1;
+            }
+        }
+
+        points.push(c);
+    }
+
+    return points;
+}
+
+function getValueChartPoints (list, values) {
+    var leng = 24;
+
+    list.sort(function (a, b) {
+        return a.time - b.time;
+    });
+
+    var arr = list.map(function (item) {
+        item.hours = new Date(item.time).getHours();
+        return item;
+    });
+
+    for (var n = 0; n < values.length; n++) {
+        values[n].points = [];
+
+        for (var i = 0; i < leng; i++) {
+            var c = 0;
+
+            for (var j = 0; j < arr.length; j++) {
+                if (arr[j].hours === i && arr[j].data.value === values[n].key) {
+                    c++;
+                }
+            }
+
+            values[n].points.push(c);
+        }
+    }
+
+    return values;
+}
+
+
+
+
+
+
