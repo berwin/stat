@@ -181,12 +181,15 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
         $scope.search = '';
         $scope.nowIndex = 0;
 
+        $scope.breadcrumb = [];
+
+
         if ($stateParams.search) {
             $scope.search = $stateParams.search + ',';
             $scope.nowIndex = $stateParams.search.split(',').length;
-        }
 
-        console.log(moment('06/17/2015', "MM/DD/YYYY"))
+            $scope.breadcrumb = $stateParams.search.split(',');
+        }
 
         new Kalendae.Input('date-input', {
             months: 1,

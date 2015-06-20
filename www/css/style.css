@@ -1,5 +1,5 @@
 *{-webkit-font-smoothing:antialiased;-moz-font-smoothing:antialiased;-ms-font-smoothing:antialiased;font-smoothing:antialiased;}
-a{color:#777;}
+a{color:#777;transition:.1s;}
 a:hover{text-decoration:none;}
 .tc{text-align:center;}
 .tr{text-align:right;}
@@ -255,9 +255,11 @@ input.form-control.key_name{width: 50%;background-color: #eee;border: 1px solid 
 .inbox-item {border:1px solid #f1f5fc ;color: #777;border-radius: 0px;font-size: 12px;transition: all .2s ease;-webkit-transition: all .2s ease;}
 .inbox-item th,
 .inbox-item td{border-bottom:none !important;border-top:none !important;}
-.table a{color:#23527c;text-decoration:underline;}
+.table a,.tool .breadcrumb a{color:#337ab7;}
+.table a:hover,.tool .breadcrumb a:hover{color:#23527c;}
 
 .tool .date-input{width:175px;height:29px;}
+.tool .breadcrumb{margin:0;}
 
 
 

@@ -7,8 +7,15 @@
             <a href="#/source/{{source._id}}">{{ source.name }}</a> / {{ group.name }}
         </h3>
         <div class="bg-fff">
-            <div class="tool">
-                <input type="text" class="form-control date-input" id="date-input">
+            <div class="tool clearfix p10">
+                <div class="fl">
+                    <ol class="breadcrumb" ng-if="breadcrumb.length">
+                        <li><a href="#/source/{{sourceID}}/{{groupID}}/{{time}}">{{group.name}}</a></li>
+                        <li ng-if="$index !== breadcrumb.length - 1" ng-repeat="item in breadcrumb"><a href="#/source/{{sourceID}}/{{groupID}}/{{time}}/{{item}}">{{item}}</a></li>
+                        <li>{{ breadcrumb[breadcrumb.length - 1] }}</li>
+                    </ol>
+                </div>
+                <div class="fr"><input type="text" class="form-control date-input" id="date-input"></div>
             </div>
             <div id="chart"></div>
 
