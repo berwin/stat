@@ -24,7 +24,7 @@ router.get( '/logout', user.logout );
 
 router.all('/client/*', controller.isLogin );
 
-// -- source
+/* -- source -- */
 
 router.route( '/client/source' )
     .post( source.save )
@@ -35,7 +35,9 @@ router.route( '/client/source/:id' )
     .delete( source.remove )
     .put( source.update );
 
-// -- group
+/* -- End source -- */
+
+/* -- group -- */
 
 router.route( '/client/:sourceID/group' )
     .post( group.create )
@@ -46,6 +48,7 @@ router.route( '/client/:sourceID/group/:id' )
     .delete( group.remove )
     .put( group.update );
 
+/* -- End group -- */
 
 router.get('/client/:sourceID/group/:groupID/content', content.query);
 router.get('/client/:sourceID/group/:groupID/contentByTime/:time', content.queryByTime);

@@ -1,6 +1,9 @@
 'use strict';
-var groupDB = require( '../db/groupDB' );
-var ObjectID = require( '../db/mongo' ).ObjectID;
+
+var async = require( 'async' ),
+    groupDB = require( '../db/groupDB' ),
+    contentDB = require( '../db/contentDB' ),
+    ObjectID = require( '../db/mongo' ).ObjectID;
 
 exports.create = function (name, sourceID, keys, values, callback) {
 
@@ -18,6 +21,40 @@ exports.create = function (name, sourceID, keys, values, callback) {
 
     }else{
         callback( 'no name or sourceID' );
+    }
+};
+
+exports.query = function (sourceID, callback) {
+    async.waterfall([getGroups, getValues], callback);
+
+    function getGroups (done) {
+        groupDB.getGroupBySourceId(sourceID, done);
+    }
+
+    function getValues (list, done) {
+        async.each(list, function (item, _done) {
+            var filter = {
+                sourceID: item.sourceID,
+                groupID: item._id
+            };
+
+            contentDB.getValueList(filter, function (err, _list) {
+                item.values = merge(item.values, _list);
+                _done();
+            });
+
+        }, function (err) {
+            done(err, list);
+        });
+    }
+
+    function merge (list, list2) {
+        list.map(function (x) {
+            for (var i = 0; i < list2.length; i++) {
+                if (x.key === list2[i]._id) return x.count = list2[i].count;
+            }
+        });
+        return list;
     }
 };
 

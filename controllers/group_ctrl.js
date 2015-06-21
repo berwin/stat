@@ -15,8 +15,8 @@ exports.create = function (req, res) {
 
 exports.query = function (req, res) {
     var sourceID = req.params.sourceID;
-
-    group.getGroupBySourceId(sourceID, function (err, list) {
+    
+    group.query(sourceID, function (err, list) {
         err ? res.status(500).send(err) : res.send(list);
     });
 };

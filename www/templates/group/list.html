@@ -8,9 +8,7 @@
                 <div class="source bg-info">
                     <div ng-click="to('/source/'+ source._id +'/'+ item._id +'/'+ time)">
                         <h3 class="m-top-none">{{ item.name }}</h3>
-                        <h5>aaa</h5>
-                        <h5>aaa</h5>
-                        <h5>aaa</h5>
+                        <h5 ng-repeat="_item in item.values" ng-if="$index < 3">{{_item.name}} : {{_item.count}}</h5>
                     </div>
                     <div class="stat-icon"><i class="fa fa-user fa-3x"></i></div>
                     <div class="box-edit" ng-click="to('/source/'+ source._id +'/'+ item._id +'/edit')"><i class="fa fa-pencil"></i></div>
