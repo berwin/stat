@@ -23,6 +23,7 @@ body{background:#f9f9f9;}
 .kalendae *{box-sizing:initial!important;}
 .bg-fff{background:#fff;}
 .h1, .h2, .h3, h1, h2, h3{margin-top:10px;}
+.block{display:block;}
 
 /* Reset */
 .navbar-fixed-top {

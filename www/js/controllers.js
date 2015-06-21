@@ -171,7 +171,7 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
     
     .controller('infoGroupCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
         $scope.source = SourceService.get({id: $stateParams.sourceID});
-        $scope.data = GroupService.get($stateParams);
+        $scope.group = GroupService.get($stateParams);
     }])
 
     .controller('groupDetailCtrl', ['$scope', '$stateParams', '$http', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, $http, SourceService, GroupService, ContentService) {
