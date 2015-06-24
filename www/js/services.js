@@ -4,16 +4,20 @@ define(['angular', 'ngResource'], function (angular) {
 
     angular.module( 'stat.services', ['ngResource'] )
 
-    .factory('ProjectService', ['$resource', function ($resource) {
-        return $resource('/client/project');
+    .factory('SourceService', ['$resource', function ($resource) {
+        return $resource('/client/source/:id', {id: '@_id'},{
+            'update': { method:'PUT' }
+        });
     }])
 
     .factory('GroupService', ['$resource', function ($resource) {
-        return $resource('/api/v1/group');
+        return $resource('/client/:sourceID/group/:id', {sourceID: '@_id', id: '@_id'},{
+            'update': { method:'PUT' }
+        });
     }])
 
     .factory('ContentService', ['$resource', function ($resource) {
-        return $resource('/api/v1/content');
+        return $resource('/client/:sourceID/group/:groupID/content/:id', {sourceID: '@_id', groupID: '@_id', id: '@_id'});
     }])
 
     .factory('RequestService', ['$http', function ($http) {
@@ -26,6 +30,14 @@ define(['angular', 'ngResource'], function (angular) {
                 return $http.get( '/logout' );
             }
 
+        };
+    }])
+
+    .run(['$rootScope', '$location', function ($rootScope, $location) {
+        $rootScope.to = function (url) {
+            var url_parsed = url.split("?");
+            var path = url_parsed[0];
+            $location.path(path);
         };
     }])
 

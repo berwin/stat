@@ -11,12 +11,24 @@ exports.remove = function (id, callback) {
     contentDB.remove({ _id : id}, callback);
 };
 
-exports.removeByProjectId = function (projectID, callback) {
+exports.removeBySourceId = function (projectID, callback) {
     contentDB.remove({ projectID : projectID}, callback);
 };
 
 exports.update = function (id, data, callback) {
     contentDB.findAndModify({ _id : id }, [], { $set : data }, { upsert : true, new : true }, callback);
+};
+
+exports.getKeyList = function (filter, key, callback) {
+    contentDB.aggregate({$match: filter}, {$group : {_id : key, count : {$sum : 1}}}, callback);
+};
+
+exports.getValueList = function (filter, callback) {
+    contentDB.aggregate({$match: filter}, {$group : {_id : '$data.value', count : {$sum : 1}}}, callback);
+};
+
+exports.getContentsByfilter = function (filter, callback) {
+    contentDB.find(filter).toArray(callback);
 };
 
 exports.getContentsByType = function (groupID, type, callback) {

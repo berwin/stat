@@ -1,0 +1,22 @@
+<div ng-include src="'../templates/nav.html'"></div>
+<div class="container-fluid">
+    <div ng-include src="'../templates/menu.html'"></div>
+    <div class="main">
+        <h3 class="sub-header"><a href="#/source">主面板</a> / {{ data.name }}</h3>
+
+        <ul class="list-group">
+            <li class="list-group-item row">
+                <div class="col-md-2">名称：</div>
+                <div class="col-md-5">{{ data.name }}</div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-2">sourceID：</div>
+                <div class="col-md-5">{{ data._id }}</div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-2">token：</div>
+                <div class="col-md-5">{{ data.token }}</div>
+            </li>
+        </ul>
+    </div>
+</div>

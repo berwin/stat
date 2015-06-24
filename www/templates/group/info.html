@@ -1,0 +1,43 @@
+<div ng-include src="'../templates/nav.html'"></div>
+<div class="container-fluid">
+    <div ng-include src="'../templates/menu.html'"></div>
+    <div class="main">
+        <h3 class="sub-header">
+            <a href="#/source">主面板</a> / 
+            <a href="#/source/{{source._id}}">{{ source.name }}</a> / {{ group.name }}
+        </h3>
+
+        <h4>Request URL</h4>
+
+<pre><code>http://stat.berwin.me/api/v1/content</code></pre>
+
+        <h4>Method</h4>
+
+<pre><code>POST</code></pre>
+
+        <h4>Parameters</h4>
+
+<pre><code>{
+    groupID : '{{group._id}}',
+    sourceID : '{{source._id}}',
+    token: '{{source.token}}'
+    data : {
+<span ng-repeat="item in group.keys">        {{item.key}}: 'test',<br ng-if="$index < group.keys.length-1"></span>
+        value: '{{group.values[0].key}}'
+    }
+}</code></pre>
+
+        <ul>
+            <li>groupID : groupID</li>
+            <li>sourceID: sourceID</li>
+            <li>token : 为了验证身份用，token在主面板信息中查看。</li>
+            <li>data : 统计的关键数据
+                <ul>
+                    <li><code>code</code>: key 为动态key 为蓝色块里面设置的key，value 根据需求填写 ... 这里可能有N多个Key (如果有多个Key必须把所有key都写在参数里)</li>
+                    <li><code>value</code>: value 为固定key(随意填写将无法统计) 值根据蓝色块里面设置的value列表中选一个</li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</div>

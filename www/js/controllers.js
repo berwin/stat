@@ -1,7 +1,6 @@
 'use strict';
 
-define(['angular', 'highcharts'], function (angular, highcharts) {
-
+define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highcharts, moment, kalendae) {
     angular.module('stat.controllers', [])
 
     .controller('navCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
@@ -14,15 +13,10 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
 
     }])
 
-    .controller('menuCtrl', ['$scope', '$stateParams', 'ProjectService', function ($scope, $stateParams, ProjectService) {
-        ProjectService.query({}, function (list) {
-
-            list.forEach(function (item, i, arr) {
-                if( item.name === $stateParams.name ) item.active = 'active';
-            });
-
-            $scope.list = list;
-        });
+    .controller('menuCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
+        $scope.isActive = function (url) {
+            return window.location.hash.indexOf(url) !== -1;
+        };
     }])
 
     .controller('loginCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
@@ -33,7 +27,7 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
             if( $scope.data.mail && $scope.data.password ){
 
                 RequestService.login( $scope.data ).success(function () {
-                    $location.path( '/home' );
+                    $location.path( '/source' );
                 });
             }
         };
@@ -73,322 +67,320 @@ define(['angular', 'highcharts'], function (angular, highcharts) {
         };
     }])
 
-    .controller('consoleCtrl', ['$scope', 'ProjectService', 'GroupService', function ($scope, ProjectService, GroupService) {
-
-        function consoleInit () {
-
-            ProjectService.query({}, function (list) {
-                $scope.list = list;
-
-                if (!list.length) {
-                    $scope.data = {};
-                    $scope.groups = [];
-                    return;
-                }
-
-                $scope.data = {
-                    name : list[0]['name'],
-                    _id : list[0]['_id'],
-                    token : list[0]['token']
-                };
-
-                gruopsInit($scope.data._id);
-            });
-
-        }
-
-        function gruopsInit (projectID) {
-            GroupService.query({projectID : projectID}, function (list) {
-                $scope.groups = list;
-            });
-        }
-
-        consoleInit();
-
-        $scope.change = function (item) {
-            $scope.data = item;
-            gruopsInit(item._id);
-        };
-
-        // delete project
-
-        $scope.remove = function (id) {
-            ProjectService.remove({id : id}, function () {
-                consoleInit();
-            });
-        };
-
-        // delete group
-
-        $scope.delete = function (item) {
-            GroupService.remove({id : item._id}, function () {
-                consoleInit();
-            });
-        };
-
+    .controller('sourceCtrl', ['$scope', 'SourceService', '$location', function ($scope, SourceService, $location) {
+        $scope.list = SourceService.query();
     }])
 
-    .controller('homeCtrl', ['$scope', 'ProjectService', '$location', function ($scope, ProjectService, $location) {
-        ProjectService.query({}, function (list) {
-            $scope.list = list;
-            $location.path('/project/'+ list[0]._id +'/' + list[0].name);
-        });
-    }])
-
-    .controller('createProjectCtrl', ['$scope', '$location', 'ProjectService', function ($scope, $location, ProjectService) {
+    .controller('sourceCreateCtrl', ['$scope', '$location', 'SourceService', function ($scope, $location, SourceService) {
         $scope.data = { name : '' };
 
-        $scope.createProject = function () {
+        $scope.createSource = function () {
             if (!$scope.data.name) return;
 
-            ProjectService.save($scope.data, function (data) {
-                $location.path('/home');
+            SourceService.save($scope.data, function (data) {
+                $location.path('/source');
+            });
+        };
+    }])
+
+    .controller('sourceEditCtrl', ['$scope', '$stateParams', '$location', 'SourceService', function ($scope, $stateParams, $location, SourceService) {
+        $scope.data = SourceService.get($stateParams);
+
+        $scope.update = function () {
+            SourceService.update($stateParams, $scope.data, function () {
+                $location.path('#/source');
+            });
+        }
+
+        $scope.delete = function () {
+            SourceService.delete($stateParams, function () {
+                $location.path('#/source');
+            });
+        }
+    }])
+    
+    .controller('sourceInfoCtrl', ['$scope', '$stateParams', 'SourceService', function ($scope, $stateParams, SourceService) {
+        $scope.data = SourceService.get($stateParams);
+    }])
+
+    .controller('groupListCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
+        $scope.source = SourceService.get({id : $stateParams.sourceID});
+        $scope.groups = GroupService.query({sourceID : $stateParams.sourceID});
+        $scope.time = moment().startOf('day').format('x') + '-' + moment().endOf('day').format('x');
+    }])
+
+    .controller('createGroupCtrl', ['$scope', '$location', '$stateParams', 'SourceService', 'GroupService', function ($scope, $location, $stateParams, SourceService, GroupService) {
+        $scope.type = 'create';
+        var sourceID = $stateParams.sourceID;
+        $scope.source = SourceService.get({id: sourceID});
+        $scope.data = { name : '', sourceID : sourceID, keys : [{key : '', name : '', count : 0}], values : [{key : '', name : '', count : 0}] };
+
+        $scope.addKey = function () {
+            $scope.data.keys.push({ key : '', name : '', count : 0 });
+        };
+        $scope.delKey = function (i) {
+            $scope.data.keys.splice(i, 1);
+        };
+
+        $scope.addVal = function () {
+            $scope.data.values.push({ key : '', name : '', count : 0});
+        };
+        $scope.delVal = function (i) {
+            $scope.data.values.splice(i, 1);
+        };
+
+        $scope.send = function () {
+            GroupService.save({sourceID: $stateParams.sourceID}, $scope.data, function () {
+                $location.path( '/source/' + sourceID );
+            });
+        };
+
+    }])
+
+    .controller('editGroupCtrl', ['$scope', '$location', '$stateParams', 'SourceService', 'GroupService', function ($scope, $location, $stateParams, SourceService, GroupService) {
+        $scope.type = 'edit';
+        var sourceID = $stateParams.sourceID;
+        $scope.source = SourceService.get({id: sourceID});
+        $scope.data = GroupService.get($stateParams);
+
+        $scope.addKey = function () {
+            $scope.data.keys.push({ key : '', name : '', count : 0 });
+        };
+        $scope.delKey = function (i) {
+            $scope.data.keys.splice(i, 1);
+        };
+
+        $scope.addVal = function () {
+            $scope.data.values.push({ key : '', name : '', count : 0});
+        };
+        $scope.delVal = function (i) {
+            $scope.data.values.splice(i, 1);
+        };
+
+        $scope.send = function () {
+            GroupService.update($scope.data, function () {
+                $location.path( '/source/' + sourceID );
+            });
+        };
+        $scope.del = function () {
+            GroupService.delete($stateParams, function () {
+                $location.path( '/source/' + sourceID );
             });
         };
     }])
     
-    .controller('projectCtrl', ['$scope', '$stateParams', 'ProjectService', 'GroupService', 'ContentService', function ($scope, $stateParams, ProjectService, GroupService, ContentService) {
-        var id = $stateParams.id;
-
-        function getToday (str) {
-            var nowDate = null;
-            str ? nowDate = new Date(str) : nowDate = new Date();
-
-            var newDateStr = nowDate.getFullYear() + '-' + ( nowDate.getMonth()+1 ) + '-' + nowDate.getDate();
-
-            return {
-                firstTime : newDateStr + '-00:00:00',
-                lastTime : newDateStr + '-23:59:59'
-            }
-        }
-
-        var oDate = getToday();
-
-        $scope.project = ProjectService.get({id : id});
-
-        function iterator (item, i, arr) {
-            ContentService.query({groupID: item._id, firstTime : oDate.firstTime, lastTime : oDate.lastTime}, function (list) {
-                item.contents = list;
-            });
-            ContentService.query({groupID: item._id}, function (list) {
-                item.count = list.length;
-            });
-        }
-
-        GroupService.query({projectID : id}, function (list) {
-            $scope.groups = list;
-
-            list.forEach(iterator);
-
-            renderChart(24, list[0], oDate.firstTime, oDate.lastTime);
-        });
-
-
-        // Click tab
-
-        $scope.tabStat = function (group) {
-            renderChart(24, group, oDate.firstTime, oDate.lastTime);
-        };
-
-        // Highcharts
-
-        function renderChart (leng, group, firstTime, lastTime) {
-
-            var data = {
-                yesterDay : [],
-                toDay : [],
-                async : 0
-            };
-
-            ContentService.query({groupID: group._id, firstTime : firstTime, lastTime : lastTime}, function (list) {
-                data.async++;
-                data.toDay = list;
-
-                if (data.async === 2) highchart(data);
-
-            });
-
-            var yesterDayTime = new Date(firstTime).getTime() - 86400000;
-            var yesterDayDate = getToday(yesterDayTime);
-
-            ContentService.query({groupID: group._id, firstTime : yesterDayDate.firstTime, lastTime : yesterDayDate.lastTime}, function (list) {
-                data.async++;
-                data.yesterDay = list;
-                if (data.async === 2) highchart(data);
-            });
-
-            function getLineChartPoints (list) {
-                list.sort(function (a, b) {
-                    return a.time - b.time;
-                });
-
-                var arr = list.map(function (item) {
-                    item.hours = new Date(item.time).getHours();
-                    return item;
-                });
-
-                var points = [];
-                for (var i = 0; i < leng; i++) {
-                    var c = 0;
-
-                    for (var j = 0; j <arr .length; j++) {
-                        if( arr[j].hours === i ) c++;
-                    }
-
-                    points.push(c);
-                }
-                return points;
-            }
-
-            function getColumnPoints (list) {
-
-                function hasColumnName (arr, item) {
-                    var temp = false;
-                    for (var i = 0; i < arr.length; i++) {
-                        if (arr[i].name === item) temp = true;
-                    }
-                    return temp;
-                }
-
-                var columns = [];
-
-                for (var i = 0; i < list.length; i++) {
-                    
-                    if (hasColumnName(columns, list[i].type)) {
-                        for (var j = 0; j < columns.length; j++) {
-                            if (columns[j].name === list[i].type) columns[j].y++;
-                        };
-                    } else {
-                        var obj = { name : list[i].type , y : 1 };
-                        columns.push( obj );
-                    }
-                };
-
-                // default
-                if (columns.length === 0 && group.types.length > 0) {
-                    for (var i = 0; i < group.types.length; i++) {
-                        columns.push({ name : group.types[i], y : 0 });
-                    }
-                } else {
-                    columns.push({ name : 'default', y : 0 });
-                }
-
-                return columns;
-            }
-
-            function highchart (data) {
-
-                // Line Charts
-
-                var todayPoints = getLineChartPoints(data.toDay);
-                var yesterDay = getLineChartPoints(data.yesterDay);
-
-                var categories = [];
-                for (var i = 0; i < leng; i++) {
-                    categories[i] = i + '点';
-                }
-
-                $('#basics-chart').highcharts({
-                    title: {
-                        text: group.name,
-                        x: -20 //center
-                    },
-                    yAxis: { title: { text : ''} },
-                    credits: { enabled:false },
-                    xAxis: {
-                        categories: categories
-                    },
-                    tooltip: {
-                        valueSuffix: '条'
-                    },
-                    plotOptions: {
-                        line: {
-                            dataLabels: { enabled: true },
-                            marker: { enabled: false }
-                        }
-                    },
-                    series: [{
-                        name: '今天',
-                        data: todayPoints
-                    }, {
-                        name: '昨天',
-                        data: yesterDay
-                    }]
-                });
-
-
-                // Column Charts
-
-                var columns = getColumnPoints(data.toDay);
-
-                $('#column').highcharts({
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: group.name
-                    },
-                    xAxis: {
-                        type: 'category'
-                    },
-                    yAxis: { title: { text: '' } },
-                    credits: { enabled:false },
-                    legend: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            borderWidth: 0,
-                            dataLabels: {
-                                enabled: true,
-                                format: '{point.y:.0f}'
-                            }
-                        }
-                    },
-
-                    tooltip: {
-                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> 条数据<br/>'
-                    },
-
-                    series: [{
-                        name: group.name,
-                        colorByPoint: true,
-                        data: columns
-                    }]
-                });
-            }
-        }
-
+    .controller('infoGroupCtrl', ['$scope', '$stateParams', 'SourceService', 'GroupService', function ($scope, $stateParams, SourceService, GroupService) {
+        $scope.source = SourceService.get({id: $stateParams.sourceID});
+        $scope.group = GroupService.get($stateParams);
     }])
 
-    .controller('createGroupCtrl', ['$scope', '$location', 'ProjectService', 'GroupService', function ($scope, $location, ProjectService, GroupService) {
-        ProjectService.query({}, function (list) {
-            $scope.list = list;
+    .controller('groupDetailCtrl', ['$scope', '$stateParams', '$http', 'SourceService', 'GroupService', 'ContentService', function ($scope, $stateParams, $http, SourceService, GroupService, ContentService) {
+        $scope.sourceID = $stateParams.sourceID;
+        $scope.groupID = $stateParams.id;
+        $scope.time = $stateParams.time;
+        $scope.search = '';
+        $scope.nowIndex = 0;
+
+        $scope.breadcrumb = [];
+
+
+        if ($stateParams.search) {
+            $scope.search = $stateParams.search + ',';
+            $scope.nowIndex = $stateParams.search.split(',').length;
+
+            $scope.breadcrumb = $stateParams.search.split(',');
+        }
+
+        new Kalendae.Input('date-input', {
+            months: 1,
+            selected: Kalendae.moment( Number($scope.time.substring(0, $scope.time.indexOf('-'))) ),
+            subscribe: {
+                hide: function () {
+                    var date = this.getSelected();
+                    $scope.time = moment(date, 'MM/DD/YYYY').startOf('day').format('x') + '-' + moment(date, 'MM/DD/YYYY').endOf('day').format('x');
+                    request($scope.time);
+                }
+            }
         });
 
-        $scope.change = function (item) {
-            $scope.project = item;
-        };
+        function request (time) {
+            $scope.source = SourceService.get({id: $scope.sourceID});
+            $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search});
+            $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, time: time, search: $stateParams.search});
 
-        $scope.data = {name : '', types : ''};
-
-        $scope.create = function () {
-            if (!$scope.project || !$scope.data.name) return;
-
-            var data = {
-                projectID : $scope.project._id,
-                name : $scope.data.name
-            };
-
-            if (!!$scope.data.types) {
-                data.types = $scope.data.types.split(',');
-            };
-
-            GroupService.save(data, function () {
-                $location.path( '/project/' + $scope.project._id + '/' + $scope.project.name );
+            var url = '/client/'+ $scope.sourceID +'/group/'+ $scope.groupID +'/contentByTime/' + time + '?search=' + ($stateParams.search || '');
+            $http.get(url).success(function (list) {
+                highchart(list);
             });
-        };
+        }
+        request( $scope.time );
 
+        function highchart (list) {
+            var points = getLineChartPoints(list);
+
+            var series = [{
+                name: 'count',
+                data: points
+            }];
+
+            if ($scope.group.keys[$scope.nowIndex]) {
+                var keysPoints = getKeyChartPoints(list, $scope.group.keys[$scope.nowIndex].name);
+                series.push({
+                    name: $scope.group.keys[$scope.nowIndex].name,
+                    data: keysPoints
+                });
+            }
+
+            var valuesPoints = getValueChartPoints(list, $scope.group.values);
+            series.push({
+                name: valuesPoints[0].name,
+                data: valuesPoints[0].points
+            });
+            series.push({
+                name: valuesPoints[1].name,
+                data: valuesPoints[1].points
+            });
+
+            var categories = [];
+            for (var i = 0; i < 24; i++) {
+                categories[i] = i + '点';
+            }
+
+            $('#chart').highcharts({
+                chart: {
+                    type: 'spline',
+                    height: 260,
+                    borderWidth: 0
+                },
+                credits: { enabled:false },
+                legend:{enabled:false},
+                title: {text: null},
+                tooltip: {
+                    shared: true,
+                    crosshairs: true
+                },
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: false,
+                            states: {
+                                hover: {
+                                    enabled: true,
+                                    shadow: false,
+                                    radius: 2
+                                }
+                            }
+                        },
+                        lineWidth : 1
+                    }
+                },
+                subtitle: { text: null },
+                xAxis: {
+                    type : 'datetime',
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    }
+                },
+                series: series
+            });
+        }
     }])
 });
+
+
+
+function getLineChartPoints (list) {
+    var leng = 24;
+
+    list.sort(function (a, b) {
+        return a.time - b.time;
+    });
+
+    var arr = list.map(function (item) {
+        item.hours = new Date(item.time).getHours();
+        return item;
+    });
+
+    var points = [];
+    for (var i = 0; i < leng; i++) {
+        var c = 0;
+
+        for (var j = 0; j < arr.length; j++) {
+            if( arr[j].hours === i ) c++;
+        }
+
+        points.push(c);
+    }
+    return points;
+}
+
+function getKeyChartPoints (list, key) {
+    var leng = 24;
+
+    list.sort(function (a, b) {
+        return a.time - b.time;
+    });
+
+    var arr = list.map(function (item) {
+        item.hours = new Date(item.time).getHours();
+        return item;
+    });
+
+    var points = [];
+
+    for (var i = 0; i < leng; i++) {
+        var c = 0;
+        var json = {};
+
+        for (var j = 0; j < arr.length; j++) {
+            if (arr[j].hours === i && !json[ arr[j].data[key] ]) {
+                c++;
+                json[ arr[j].data[key] ] = 1;
+            }
+        }
+
+        points.push(c);
+    }
+
+    return points;
+}
+
+function getValueChartPoints (list, values) {
+    var leng = 24;
+
+    list.sort(function (a, b) {
+        return a.time - b.time;
+    });
+
+    var arr = list.map(function (item) {
+        item.hours = new Date(item.time).getHours();
+        return item;
+    });
+
+    for (var n = 0; n < values.length; n++) {
+        values[n].points = [];
+
+        for (var i = 0; i < leng; i++) {
+            var c = 0;
+
+            for (var j = 0; j < arr.length; j++) {
+                if (arr[j].hours === i && arr[j].data.value === values[n].key) {
+                    c++;
+                }
+            }
+
+            values[n].points.push(c);
+        }
+    }
+
+    return values;
+}
+
+
+
+
+
+

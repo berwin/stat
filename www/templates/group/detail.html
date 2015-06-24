@@ -1,0 +1,42 @@
+<div ng-include src="'../templates/nav.html'"></div>
+<div class="container-fluid">
+    <div ng-include src="'../templates/menu.html'"></div>
+    <div class="main">
+        <h3 class="sub-header">
+            <a href="#/source">主面板</a> / 
+            <a href="#/source/{{source._id}}">{{ source.name }}</a> / {{ group.name }}
+        </h3>
+        <div class="bg-fff">
+            <div class="tool clearfix p10">
+                <div class="fl">
+                    <ol class="breadcrumb" ng-if="breadcrumb.length">
+                        <li><a href="#/source/{{sourceID}}/{{groupID}}/{{time}}">{{group.name}}</a></li>
+                        <li ng-if="$index !== breadcrumb.length - 1" ng-repeat="item in breadcrumb"><a href="#/source/{{sourceID}}/{{groupID}}/{{time}}/{{item}}">{{item}}</a></li>
+                        <li>{{ breadcrumb[breadcrumb.length - 1] }}</li>
+                    </ol>
+                </div>
+                <div class="fr"><input type="text" class="form-control date-input" id="date-input"></div>
+            </div>
+            <div id="chart"></div>
+
+            <div>
+                <table class="table" ng-if="content.length">
+                    <thead>
+                        <tr class="inbox-item keytexts">
+                            <th>count</th>
+                            <th>{{group.keys[nowIndex].name}}</th>
+                            <th ng-repeat="item in group.values">{{item.name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="inbox-item" ng-repeat="item in content">
+                            <td>{{item.count || 0}}</td>
+                            <td><a href="#/source/{{sourceID}}/{{groupID}}/{{time}}/{{search}}{{item.key}}">{{item.key || 0}}</a></td>
+                            <td ng-repeat="val in group.values">{{ item.values[ val.key ] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

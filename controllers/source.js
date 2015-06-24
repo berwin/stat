@@ -1,7 +1,7 @@
 'use strict';
 
 var async = require( 'async' );
-var projectDB = require( '../db/projectDB' );
+var sourceDB = require( '../db/sourceDB' );
 var groupDB = require( '../db/groupDB' );
 var contentDB = require( '../db/contentDB' );
 var ObjectID = require( '../db/mongo' ).ObjectID;
@@ -15,12 +15,12 @@ exports.create = function (data, callback) {
         token : data.token
     };
 
-    projectDB.insert(obj, callback);
+    sourceDB.insert(obj, callback);
 };
 
 exports.remove = function (id, callback) {
 
-    function removeGroup (projectID, cb) {
+    function removeGroup (sourceID, cb) {
 
         function iterator (item, done) {
             groupDB.remove(item._id, done);
@@ -28,7 +28,7 @@ exports.remove = function (id, callback) {
 
         async.waterfall([
             function (done) {
-                groupDB.getGroupByProjectId(projectID, done);
+                groupDB.getGroupBySourceId(sourceID, done);
             },
             function (list, done) {
                 async.each(list, iterator, function (err) {
@@ -42,16 +42,17 @@ exports.remove = function (id, callback) {
 
     async.parallel([
         function (done) {
-            projectDB.remove(id, done);
+            sourceDB.remove(id, done);
         },
         function (done) {
             removeGroup(id, done);
         },
         function (done) {
-            contentDB.removeByProjectId(id, done);
+            contentDB.removeBySourceId(id, done);
         }
     ], callback);
 };
 
-exports.getProjectsByUserId = projectDB.getProjectsByUserId;
-exports.getProjectById = projectDB.getProjectById;
+exports.update = sourceDB.update;
+exports.getByUserId = sourceDB.getByUserId;
+exports.getById = sourceDB.getById;

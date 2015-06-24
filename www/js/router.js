@@ -18,37 +18,59 @@ define(function () {
             controller: 'signupCtrl'
         })
 
-        .state('console', {
-            url: '/console',
-            templateUrl: '../templates/console.html',
-            controller: 'consoleCtrl'
+        .state('source-list', {
+            url: '/source',
+            templateUrl: '../templates/source/source.html',
+            controller: 'sourceCtrl'
+        })
+        .state('source-create', {
+            url: '/source/create',
+            templateUrl: '../templates/source/source-create.html',
+            controller: 'sourceCreateCtrl'
+        })
+        .state('source-edit', {
+            url: '/source/:id/edit',
+            templateUrl: '../templates/source/source-edit.html',
+            controller: 'sourceEditCtrl'
+        })
+        .state('source-info', {
+            url: '/source/:id/info',
+            templateUrl: '../templates/source/source-info.html',
+            controller: 'sourceInfoCtrl'
         })
 
-        .state('home', {
-            url: '/home',
-            templateUrl: '../templates/home.html',
-            controller: 'homeCtrl'
+        .state('group-list', {
+            url: '/source/:sourceID',
+            templateUrl: '../templates/group/list.html',
+            controller: 'groupListCtrl'
         })
-
-        .state('create-project', {
-            url: '/create-project',
-            templateUrl: '../templates/create-project.html',
-            controller: 'createProjectCtrl'
-        })
-
-        .state('project', {
-            url: '/project/:id/:name',
-            templateUrl: '../templates/project.html',
-            controller: 'projectCtrl'
-        })
-
-        .state('create-group', {
-            url: '/create-group',
-            templateUrl: '../templates/create-group.html',
+        .state('group-create', {
+            url: '/source/:sourceID/create',
+            templateUrl: '../templates/group/create.html',
             controller: 'createGroupCtrl'
+        })
+        .state('group-edit', {
+            url: '/source/:sourceID/:id/edit',
+            templateUrl: '../templates/group/create.html',
+            controller: 'editGroupCtrl'
+        })
+        .state('group-info', {
+            url: '/source/:sourceID/:id/info',
+            templateUrl: '../templates/group/info.html',
+            controller: 'infoGroupCtrl'
+        })
+        .state('group-detail', {
+            url: '/source/:sourceID/:id/:time',
+            templateUrl: '../templates/group/detail.html',
+            controller: 'groupDetailCtrl'
+        })
+        .state('group-detail-search', {
+            url: '/source/:sourceID/:id/:time/:search',
+            templateUrl: '../templates/group/detail.html',
+            controller: 'groupDetailCtrl'
         })
         
 
-        $urlRouterProvider.otherwise( '/home' );
+        $urlRouterProvider.otherwise( '/source' );
     };
 });
