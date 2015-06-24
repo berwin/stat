@@ -65,14 +65,15 @@ exports.query = function (req, res) {
 
             if (info.keys[ keys.length ]) key = info.keys[ keys.length ].key;
 
-            if (!info.keys[ keys.length ]) return res.send();
             done(err, info);
         });
     }
 
     function searchKeys (group, done) {
-        console.log( filter, key );
-        contentDB.getKeyList(filter, '$data.'+key, function (err, list) {
+        // console.log( filter, key );
+
+        var k = key ? '$data.' + key : '$groupID';
+        contentDB.getKeyList(filter, k, function (err, list) {
             done(err, group, list);
         });
     }
@@ -83,11 +84,11 @@ exports.query = function (req, res) {
         async.each(list, iterator, callback);
 
         function iterator (item, _done) {
-            filter['data.'+key] = item._id;
+            if (key) filter['data.'+key] = item._id;
 
             contentDB.getValueList(filter, function (err, _list) {
                 var obj = {
-                    key: item._id,
+                    key: key ? item._id : '',
                     count: item.count,
                     values: {}
                 };
