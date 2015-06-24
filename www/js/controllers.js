@@ -223,6 +223,8 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
                 data: points
             }];
 
+            console.log( $scope.group.keys, $scope.nowIndex );
+
             if ($scope.group.keys[$scope.nowIndex]) {
                 var keysPoints = getKeyChartPoints(list, $scope.group.keys[$scope.nowIndex].name);
                 series.push({
