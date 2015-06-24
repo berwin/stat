@@ -212,7 +212,7 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
             GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search}, function (data) {
                 $scope.group = data;
                 c--;
-                if (c === 2) highchart(list);
+                if (c === 0) highchart(list);
             });
             $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, time: time, search: $stateParams.search});
 
