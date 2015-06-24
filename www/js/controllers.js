@@ -204,13 +204,23 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
         });
 
         function request (time) {
+
+            var c = 2;
+            var list = [];
+
             $scope.source = SourceService.get({id: $scope.sourceID});
-            $scope.group = GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search});
+            GroupService.get({sourceID: $scope.sourceID, id: $scope.groupID, search: $stateParams.search}, function (data) {
+                $scope.group = data;
+                c--;
+                if (c === 2) highchart(list);
+            });
             $scope.content = ContentService.query({sourceID: $scope.sourceID, groupID: $scope.groupID, time: time, search: $stateParams.search});
 
             var url = '/client/'+ $scope.sourceID +'/group/'+ $scope.groupID +'/contentByTime/' + time + '?search=' + ($stateParams.search || '');
-            $http.get(url).success(function (list) {
-                highchart(list);
+            $http.get(url).success(function (_list) {
+                list = _list;
+                c--;
+                if (c === 0) highchart(list);
             });
         }
         request( $scope.time );
@@ -222,8 +232,6 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
                 name: 'count',
                 data: points
             }];
-
-            console.log( $scope.group.keys, $scope.nowIndex );
 
             if ($scope.group.keys[$scope.nowIndex]) {
                 var keysPoints = getKeyChartPoints(list, $scope.group.keys[$scope.nowIndex].name);
