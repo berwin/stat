@@ -194,6 +194,7 @@ input,button,select,textarea{outline:none}/*清除chrome的黄色边*/
 .box-edit{display: none;position: absolute;top:0px;right:0px;padding: 10px;font-size: 1.5em;}
 .box-help{display: none;position: absolute;top: 30px;right: 5px;padding: 10px;font-size: 1.5em;}
 .source:hover .box-edit,.source:hover .box-help{display:block;}
+.source-item{min-height:100px;}
 
 .add{
    border-radius: 5px;
