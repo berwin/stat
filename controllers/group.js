@@ -58,7 +58,17 @@ exports.query = function (sourceID, callback) {
     }
 };
 
-exports.remove = groupDB.remove;
+exports.remove = function (groupID, callback) {
+    async.parallel([
+        function (done) {
+            groupDB.remove(groupID, done);
+        },
+        function (done) {
+            contentDB.removeByGroupId(groupID, done);
+        }
+    ], callback);
+};
+
 exports.update = groupDB.update;
 exports.getGroupById = groupDB.getGroupById;
 exports.getGroupBySourceId = groupDB.getGroupBySourceId;

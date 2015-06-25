@@ -11,6 +11,10 @@ exports.remove = function (id, callback) {
     groupDB.remove({ _id : id }, callback);
 };
 
+exports.removeBySourceId = function (sourceID, callback) {
+    groupDB.remove({ sourceID : sourceID }, callback);
+};
+
 exports.update = function (id, data, callback) {
     groupDB.findAndModify({ _id : id }, [], { $set : data }, { upsert : true, new : true }, callback);
 };

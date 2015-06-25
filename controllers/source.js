@@ -20,32 +20,12 @@ exports.create = function (data, callback) {
 
 exports.remove = function (id, callback) {
 
-    function removeGroup (sourceID, cb) {
-
-        function iterator (item, done) {
-            groupDB.remove(item._id, done);
-        }
-
-        async.waterfall([
-            function (done) {
-                groupDB.getGroupBySourceId(sourceID, done);
-            },
-            function (list, done) {
-                async.each(list, iterator, function (err) {
-                    err ? done(err) : done(null);
-                });
-            }
-        ], function (err, result) {
-            cb(err, result);
-        });
-    }
-
     async.parallel([
         function (done) {
             sourceDB.remove(id, done);
         },
         function (done) {
-            removeGroup(id, done);
+            groupDB.removeBySourceId(id, done);
         },
         function (done) {
             contentDB.removeBySourceId(id, done);
