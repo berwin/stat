@@ -11,8 +11,12 @@ exports.remove = function (id, callback) {
     contentDB.remove({ _id : id}, callback);
 };
 
-exports.removeBySourceId = function (projectID, callback) {
-    contentDB.remove({ projectID : projectID}, callback);
+exports.removeBySourceId = function (sourceID, callback) {
+    contentDB.remove({ sourceID : sourceID}, callback);
+};
+
+exports.removeByGroupId = function (groupID, callback) {
+    contentDB.remove({ groupID : groupID}, callback);
 };
 
 exports.update = function (id, data, callback) {
@@ -43,10 +47,10 @@ exports.getContentsByTime = function (groupID, firstTime, lastTime, callback) {
     contentDB.find({ groupID : groupID, time : { $gte : firstTime, $lte : lastTime } }).toArray(callback);
 };
 
-exports.getContentsByProjectId = function (projectID, callback) {
-    contentDB.find({ projectID : projectID }).toArray(callback);
+exports.getContentsBySourceId = function (sourceID, callback) {
+    contentDB.find({ sourceID : sourceID }).toArray(callback);
 };
 
-exports.getContentsByProjectTime = function (projectID, firstTime, lastTime, callback) {
-    contentDB.find({ projectID : projectID, time : { $gte : firstTime, $lte : lastTime } }).toArray(callback);
+exports.getContentsBySourceTime = function (sourceID, firstTime, lastTime, callback) {
+    contentDB.find({ sourceID : sourceID, time : { $gte : firstTime, $lte : lastTime } }).toArray(callback);
 };

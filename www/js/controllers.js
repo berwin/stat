@@ -234,22 +234,20 @@ define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highc
             }];
 
             if ($scope.group.keys[$scope.nowIndex]) {
-                var keysPoints = getKeyChartPoints(list, $scope.group.keys[$scope.nowIndex].name);
+                var keysPoints = getKeyChartPoints(list, $scope.group.keys[$scope.nowIndex]['name']);
                 series.push({
-                    name: $scope.group.keys[$scope.nowIndex].name,
+                    name: $scope.group.keys[$scope.nowIndex]['name'],
                     data: keysPoints
                 });
             }
 
             var valuesPoints = getValueChartPoints(list, $scope.group.values);
-            series.push({
-                name: valuesPoints[0].name,
-                data: valuesPoints[0].points
-            });
-            series.push({
-                name: valuesPoints[1].name,
-                data: valuesPoints[1].points
-            });
+            for (var i = 0; i < valuesPoints.length; i++) {
+                series.push({
+                    name: valuesPoints[i]['name'],
+                    data: valuesPoints[i].points
+                });
+            }
 
             var categories = [];
             for (var i = 0; i < 24; i++) {
