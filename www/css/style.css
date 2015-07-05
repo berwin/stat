@@ -15,6 +15,8 @@ a:hover{text-decoration:none;}
 .m-top-none{margin-top:0;}
 .p10{padding:10px;}
 .p20{padding:20px;}
+.p10-0{padding:10px 0;}
+.p20-0{padding:20px 0;}
 body{background:#f9f9f9;}
 .bg-fff{background:#fff;}
 /*#nprogress .bar{background:#6bafbd;top:50px;}*/
@@ -263,5 +265,6 @@ input.form-control.key_name{width: 50%;background-color: #eee;border: 1px solid 
 .tool .date-input{width:175px;height:29px;}
 .tool .breadcrumb{margin:0;}
 
-
+/* Doc */
+.doc h4,.doc h5{color:#777;}
 

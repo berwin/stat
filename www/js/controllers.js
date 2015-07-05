@@ -1,9 +1,11 @@
 'use strict';
 
-define(['angular', 'highcharts', 'moment', 'kalendae'], function (angular, highcharts, moment, kalendae) {
+define(['angular', 'highcharts', 'moment', 'kalendae', './utils'], function (angular, highcharts, moment, kalendae, utils) {
     angular.module('stat.controllers', [])
 
     .controller('navCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
+
+        $scope.mail = utils.getCookie('mail');
 
         $scope.logout = function () {
             RequestService.logout().success(function () {
