@@ -1,0 +1,103 @@
+<div ng-include src="'../templates/nav.html'"></div>
+<div class="container-fluid">
+    <div ng-include src="'../templates/menu.html'"></div>
+    <div class="main help">
+        <h3 class="sub-header">帮助中心</h3>
+        <div class="p20-0">
+            <p>Stat 是一个数据统计平台。</p>
+            <p>它是自由的，统计什么，完全取决于你如何使用它</p>
+        </div>
+
+        <h3 class="sub-header">功能介绍</h3>
+        <div class="p20-0">
+            <p>Stat的统计分为 横向和纵向（广度和深度） 两个方向</p>
+            <ul>
+                <li><strong>横向（广度）</strong>：例如：PV，UV 两个完全不同的统计属于 <strong>横向（广度）统计</strong></li>
+                <li><strong>纵向（深度）</strong>：例如：一个小区有多少户人家，每户人家产生了多少 PV 和 UV，这里的 小区和户就是 <strong>纵向（深度）统计</strong></li>
+            </ul>
+        </div>
+
+        <h3 class="sub-header">使用说明</h3>
+        <p>页面上可以创建 <code>“源（source）”</code>和 <code>“组（group）”</code></p>
+        <ul>
+            <li><strong>主面板</strong> 列表中的 <strong>红色块</strong> 我称作 <code>“源（source）”</code> 可以理解为项目，用来装项目中各种各样统计的容器。</li>
+            <li><strong>源</strong> 的子级中的 <strong>蓝色块</strong> 我称作 <code>“组（group）”</code> 是统计的具体实例，每个 <strong>组</strong> 统计的东西可能都不一样，这取决于你如何使用它</li>
+        </ul>
+
+        <div class="p10-0">
+            <h4>创建源</h4>
+            <p>创建<code>“源（source）”</code> 的时候需要填写一个 <code>“名字（name）”</code>（so easy， 就这么简单）</p>
+        </div>
+
+        <h4>创建组</h4>
+        <p>创建 <code>“组（group）”</code> 的时候需要添加配置一些信息 <code>“名字（name）”</code>，<code>“key”</code>，<code>“value”</code></p>
+
+        <ul>
+            <li>名字（name）：group的名字</li>
+            <li>key：可不填，key 决定深度，如果不选，就没有纵向，只有横向统计</li>
+            <li>value：必填，value 决定广度</li>
+        </ul>
+
+        <p>例如：</p>
+        <ul>
+            <li>key : community（小区）和 user（用户）</li>
+            <li>value : PV（访问量） 和 click（点击量）</li>
+        </ul>
+        
+        <p>可以统计出</p>
+
+        <ul>
+            <li>这个<code>“组（group）”</code>一共有多少PV和click</li>
+            <li>一共有多少个小区，每个小区有多少PV和click</li>
+            <li>每个小区里有多少个用户 - 每个用户产生了多少PV和click</li>
+        </ul>
+        <p>在这里可以看到 <strong>PV和click</strong> 是 <strong>横向（广度）统计</strong>，而 <strong>小区</strong> 和 <strong>用户</strong> 则是 <strong>纵向（深度）统计</strong></p>
+
+        <p class="p20-0">在网站上创建完 <strong>源</strong> 和 <strong>组</strong> 之后，就可以在项目里调用 <strong>api</strong> 来进行统计数据啦</p>
+
+        <h3 class="sub-header">API 使用说明</h3>
+        <p>Request URL</p>
+<pre><code>http://stat.berwin.me/api/v1/content</code></pre>
+
+        <p>Method</p>
+<pre><code>POST</code></pre>
+        
+        <p>Parameters</p>
+        <ul>
+            <li>groupID：在group信息中查看。注：鼠标滑过蓝色块，出现信息<strong>图标</strong>，点击<strong>图标</strong>进入group信息界面。</li>
+            <li>sourceID：同上</li>
+            <li>token：同上</li>
+            <li>data：统计的关键数据
+                <ul>
+                    <li><code>?</code>: 这是一个 <code>键(key)</code> : <code>值(value)</code>，<code>键(key)</code>为创建group时，所填写的key，<code>值(value)</code>根据需求填写 （这里不明白没关系，下面会给出例子）</li>
+                    <li><code>?</code>: ... 同上（根据创建group时配置的key的数量，这里可能有N多个）</li>
+                    <li><code>value</code>: 值为创建group时配置的value中选一个</li>
+                </ul>
+            </li>
+        </ul>
+        <p>注：<code>sourceID</code>与<code>token</code>也可以在主面板信息中查看。鼠标滑过红色块，出现信息<strong>图标</strong>，点击<strong>图标</strong>进入主面板信息。</p>
+
+        <div class="p10-0">
+            <p>Example</p>
+            <p>用上面使用说明中创建<code>组（group）</code>的配置信息，写个例子。</p>
+<pre><code>{
+    groupID : 'xxxx', // groupID
+    sourceID : 'xxxxx', // sourceID
+    token: 'xxxxx' // token
+    data : {
+        community: '天通苑小区', // key为配置信息中写的，必须认真填写， value根据业务逻辑填写即可
+        user: 'Berwin', // 必须把配置信息中的key全部写入参数中
+        value: 'PV' // 值为配置信息中，填写的多个value中的其中一个
+    }
+}</code></pre>
+        
+        <p>其实可以分两部分理解</p>
+        <ol>
+            <li>groupID，sourceID，token 为第一部分，属于基础属性</li>
+            <li>data 为第二部分，上面的例子可以理解为：<code><strong>天通苑小区</strong> 中的 <strong>Berwin用户</strong> 产生了一个 <strong>PV</strong></code></li>
+        </ol>
+        </div>
+        <p>如果还有不理解的地方，可以去 这里提问 <a href="https://github.com/berwin/stat/issues" target="_blank">传送门</a>，或给Berwin发邮件</p>
+<pre><code>'moc.qq@5991niwreb'.split('').reverse().join('');</code></pre>
+    </div>
+</div>
