@@ -26,18 +26,20 @@
         value: '{{group.values[0].key}}'
     }
 }</code></pre>
-
+        
+        <p>注：所有ID及参数均为真实有效的实际参数</p>
         <ul>
             <li>groupID : groupID</li>
             <li>sourceID: sourceID</li>
             <li>token : 为了验证身份用，token在主面板信息中查看。</li>
-            <li>data : 统计的关键数据
+            <li>data：统计的关键数据
                 <ul>
-                    <li><code>code</code>: key 为动态key 为蓝色块里面设置的key，value 根据需求填写 ... 这里可能有N多个Key (如果有多个Key必须把所有key都写在参数里)</li>
-                    <li><code>value</code>: value 为固定key(随意填写将无法统计) 值根据蓝色块里面设置的value列表中选一个</li>
+                    <li><code>?</code>: 这是一个 <code>键(key)</code> : <code>值(value)</code>，<code>键(key)</code>为创建group(蓝块) 时，所填写的key，<code>值(value)</code>根据需求填写 （这里不明白没关系，下面会给出例子）</li>
+                    <li><code>?</code>: ... 同上（根据创建group(蓝块) 时配置的key的数量，这里可能有N多个）</li>
+                    <li><code>value</code>: 值为创建group(蓝块) 时配置的value中选一个</li>
                 </ul>
             </li>
         </ul>
-
+        <p>更详细的API使用说明可以去<a href="#/help">帮助中心</a>查看。</p>
     </div>
 </div>

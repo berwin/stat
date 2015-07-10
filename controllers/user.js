@@ -69,8 +69,9 @@ exports.login = function (req, res) {
 
         var token = utils.getMd5( result._id + config.MD5_SUFFIX );
 
-        res.cookie( 'userID', result._id, { httpOnly: true });
-        res.cookie( 'token', token, { httpOnly: true });
+        res.cookie( 'userID', result._id, { httpOnly: true } );
+        res.cookie( 'token', token, { httpOnly: true } );
+        res.cookie( 'mail', result.mail );
 
         res.status( status ).send(result);
     });

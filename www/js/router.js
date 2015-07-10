@@ -18,6 +18,11 @@ define(function () {
             controller: 'signupCtrl'
         })
 
+        .state('help', {
+            url: '/help',
+            templateUrl: '../templates/help.html'
+        })
+
         .state('source-list', {
             url: '/source',
             templateUrl: '../templates/source/source.html',
