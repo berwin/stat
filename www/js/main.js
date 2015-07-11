@@ -11,7 +11,8 @@ requirejs.config({
         'NProgress' : '../lib/nprogress/nprogress',
         'highcharts' : '../lib/highcharts/highcharts',
         'moment': '../lib/moment/min/moment.min',
-        'kalendae': '../lib/chipersoft-kalendae/build/kalendae.standalone'
+        'kalendae': '../lib/chipersoft-kalendae/build/kalendae.standalone',
+        'toastr': '../lib/toastr/toastr.min'
     },
 
     shim : {
@@ -46,6 +47,10 @@ requirejs.config({
         'kalendae': {
             exports : 'kalendae',
             deps : ['moment']
+        },
+        'toastr': {
+            exports : 'toastr',
+            deps : ['jquery']
         }
     }
 });
