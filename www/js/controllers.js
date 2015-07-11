@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'highcharts', 'moment', 'kalendae', './utils'], function (angular, highcharts, moment, kalendae, utils) {
+define(['angular', 'highcharts', 'moment', 'kalendae', 'toastr', './utils'], function (angular, highcharts, moment, kalendae, toastr, utils) {
     angular.module('stat.controllers', [])
 
     .controller('navCtrl', ['$scope', '$location', 'RequestService', function ($scope, $location, RequestService) {
@@ -30,13 +30,15 @@ define(['angular', 'highcharts', 'moment', 'kalendae', './utils'], function (ang
 
                 RequestService.login( $scope.data ).success(function () {
                     $location.path( '/source' );
+                }).error(function (data, status) {
+                    toastr.error(data.message, '登录失败');
                 });
             }
         };
 
     }])
 
-    .controller('signupCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    .controller('signupCtrl', ['$scope', 'RequestService', '$location', function ($scope, RequestService, $location) {
         $scope.data = { mail : '', password : '', confirm : '' };
         $scope.err = { mail : '', password : '', confirm : '' };
 
@@ -46,8 +48,11 @@ define(['angular', 'highcharts', 'moment', 'kalendae', './utils'], function (ang
                 if ($scope.err[i] === 'err') return;
             }
 
-            $http.post('/signup', $scope.data).success(function (data) {
+            RequestService.signup($scope.data).success(function () {
+                toastr.success('请前往您的的邮箱激活账号', '注册成功');
                 $location.path( '/login' );
+            }).error(function (data, status, headers, config) {
+                toastr.error('请检查您的注册信息是否正确', '注册失败');
             });
         }
 

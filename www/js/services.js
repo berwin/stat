@@ -28,6 +28,9 @@ define(['angular', 'ngResource'], function (angular) {
             },
             logout : function () {
                 return $http.get( '/logout' );
+            },
+            signup: function (data) {
+                return $http.post('/signup', data);
             }
 
         };

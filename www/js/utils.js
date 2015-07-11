@@ -8,7 +8,8 @@ define(function () {
             document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + oDate;
         },
         getCookie : function (name) {
-            return decodeURIComponent( document.cookie.match(name + '=[a-zA-Z0-9%\.]+')[0].split('=')[1] );
+            var cookie = document.cookie.match(name + '=[a-zA-Z0-9%\.]+');
+            return cookie ? decodeURIComponent( cookie[0].split('=')[1] ) : '';
         },
         removeCookie: function  (name) {
             document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
