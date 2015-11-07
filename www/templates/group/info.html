@@ -20,7 +20,7 @@
 <pre><code>{
     groupID : '{{group._id}}',
     sourceID : '{{source._id}}',
-    token: '{{source.token}}'
+    token: '{{source.token}}',
     data : {
 <span ng-repeat="item in group.keys">        {{item.key}}: 'test',<br ng-if="$index < group.keys.length-1"></span>
         value: '{{group.values[0].key}}'
